@@ -31,6 +31,7 @@ public class PrenotationController {
 
 		List<Prenotation> prenList = new ArrayList<Prenotation>();
 	
+		
 		try {
 			
 			User user = new User();

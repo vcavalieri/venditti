@@ -1,11 +1,11 @@
 package com.garage.dao.impl;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.garage.dao.TransactionManager;
 import com.garage.dao.UserDAO;
 import com.garage.exception.UserException;
-import com.garage.model.SingletonHiberUtil;
 import com.garage.model.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -14,99 +14,38 @@ public class UserDAOImpl implements UserDAO {
 	public boolean registerUser(User user) throws UserException {
 
 		boolean status = false;
-
-		Session session = null;
-		
-		Transaction tx = null;
-
 		try {
-
-			session = SingletonHiberUtil.getSession();
-		
-			System.out.println(session.isOpen());
-			
-			tx = session.beginTransaction();
-			
-			tx.begin();
-			
-			session.save(user);
-
-			status = true;
-
-			tx.commit();
-			
+			TransactionManager<User> txMan = new TransactionManager<User>();
+			status = txMan.insert(user);  
 		} catch (Exception e) {
-			
-			if(tx!=null) {
-				
-				tx.rollback();
-				
-			}
-			
 			e.printStackTrace();
-
 			throw new UserException(e);
-
 		}
-
 		return status;
-
 	}
 
 	@Override
 	public String[] loginUser(User user) throws UserException {
 
 		Boolean status = false;
-		
-//		List<Object[]> list;
-		
 		String[] loginData = { null, null };
-
 		User userQ = new User();
-
-		Session session = null;
-
+		List<User> userList = new ArrayList<User>();
 		try {
-
-			session = SingletonHiberUtil.getSession();
-			
-//			CriteriaBuilder builder = session.getCriteriaBuilder();
-//			CriteriaQuery<Object[]> criteriaQuery = builder.createQuery(Object[].class);
-//			Root<User> rootUser = criteriaQuery.from(User.class);
-//			
-//			criteriaQuery.multiselect(rootUser).where(builder.equal(rootUser.get("username"), user.getUsername()));
-//
-//			Query<Object[]> query = session.createQuery(criteriaQuery);
-//			
-//			list = query.getResultList();
-//			
-//			for (Object obj : list) {
-//				
-//				userQ = (User) obj;
-//				
-//			}
-			
-			userQ = session.load(User.class, 1);
-
-			if (userQ.getIduser() == 1) {
-
-				status = true;
-  
+			TransactionManager<User> txMan = new TransactionManager<User>();
+			userList = txMan.search(user);
+			for (User users : userList) {
+				userQ = users;
 			}
-
+			if (userQ.getPassword().equals(user.getPassword()) && userQ.getUsername().equals(user.getUsername())) {
+				status = true;
+			}
 			loginData[0] = status.toString();
 			loginData[1] = Integer.toString(userQ.getIduser());
-
 		} catch (Exception e) {
-			
 			e.printStackTrace();
-   
 			throw new UserException(e);
-
 		}
- 
 		return loginData;
-
 	}
-
 }

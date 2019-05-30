@@ -19,7 +19,7 @@ public class SingletonHiberUtil {
 		SessionFactory sFactory = getSessionFactory();
 		if (session == null) {
 			session = sFactory.openSession();
-		} else {
+		} else { 
 			session = sFactory.getCurrentSession();
 		}
 		return session;
@@ -32,7 +32,6 @@ public class SingletonHiberUtil {
 
 			try {
   
-				
 				// Create registry
 				registry = new StandardServiceRegistryBuilder().configure().build();
 

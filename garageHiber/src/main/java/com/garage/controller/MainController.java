@@ -11,14 +11,11 @@ public class MainController {
 	public String redirector() {
 
 		return "index";
-
 	}
 
 	@RequestMapping(value = "/error", method = RequestMethod.GET)
 	public String error() {
 
 		return "error";
-
 	}
-
 }

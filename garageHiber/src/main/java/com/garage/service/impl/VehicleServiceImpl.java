@@ -14,56 +14,34 @@ public class VehicleServiceImpl implements VehicleService {
 	public String insertVehicleService(Vehicle vehicle) throws VehicleException {
 
 		String message = null;
-
 		VehicleDAOImpl vehicleOp = new VehicleDAOImpl();
-
 		boolean result = vehicleOp.insertVehicle(vehicle);
-
 		if (result) {
-
 			message = "Vehicle Succesfully Inserted!";
-
 		} else {
-
 			message = "Vehicle Insertion Failed!";
-
 		}
-
 		return message;
-
 	}
 
 	@Override
 	public String deleteVehicleService(Vehicle vehicle) throws VehicleException {
 
 		String message = null;
-
 		VehicleDAOImpl vehicleOp = new VehicleDAOImpl();
-
 		boolean result = vehicleOp.deleteVehicle(vehicle);
-
 		if (result) {
-
 			message = "Vehicle Succesfully Deleted!";
-
 		} else {
-
 			message = "Vehicle Deletion Failed!";
-
 		}
-
 		return message;
-
-
 	}
 
 	@Override
 	public List<Vehicle> searchVehicleService(SearchFilter filter) throws VehicleException {
-		
-		VehicleDAOImpl vehicleOp = new VehicleDAOImpl();
-		
-		return vehicleOp.searchVehicle(filter);
-		
-	}
 
+		VehicleDAOImpl vehicleOp = new VehicleDAOImpl();
+		return vehicleOp.searchVehicle(filter);
+	}
 }

@@ -144,7 +144,7 @@ table, th, td {
 												PRENOTATION</a></td>
 										<c:if test="${sessionScope.rentcheck == true}">
 											<td><a
-												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.idVehicle}&licenseplate=${itemlist.licensePlate}">RENT</a></td>
+												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.licenseplate}&licenseplate=${itemlist.licenseplate}">RENT</a></td>
 										</c:if>
 
 									</tr>
@@ -158,11 +158,11 @@ table, th, td {
 										<td>&nbsp;${itemlist.brand}&nbsp;</td>
 										<td>&nbsp;${itemlist.vehicleinfo.description}&nbsp;</td>
 										<td><a
-											href="${pageContext.request.contextPath}/deleteVehicle?licenseplate=${itemlist.licensePlate}">DELETE
+											href="${pageContext.request.contextPath}/deleteVehicle?licenseplate=${itemlist.licenseplate}">DELETE
 												VEHICLE</a></td>
 										<c:if test="${sessionScope.rentcheck == true}">
 											<td><a
-												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.idVehicle}&licenseplate=${itemlist.licensePlate}">RENT</a></td>
+												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.licenseplate}&licenseplate=${itemlist.licenseplate}">RENT</a></td>
 										</c:if>
 									</tr>
 								</c:forEach>
@@ -190,7 +190,7 @@ table, th, td {
 												PRENOTATION</a></td>
 										<c:if test="${sessionScope.rentcheck == true}">
 											<td><a
-												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.idVehicle}&licenseplate=${itemlist.licensePlate}">RENT</a></td>
+												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.licenseplate}&licenseplate=${itemlist.licenseplate}">RENT</a></td>
 										</c:if>
 
 									</tr>
@@ -205,11 +205,11 @@ table, th, td {
 										<td>&nbsp;${itemlist.vehicleinfo.description}&nbsp;</td>
 										<c:if test="${sessionScope.rentcheck == true}">
 											<td><a
-												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.idVehicle}&licenseplate=${itemlist.licensePlate}">RENT</a></td>
+												href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.licenseplate}&licenseplate=${itemlist.licenseplate}">RENT</a></td>
 										</c:if>
 									</tr>
 								</c:forEach>
-							</c:otherwise>
+							</c:otherwise>  
 						</c:choose>
 					</c:otherwise>
 				</c:choose>

@@ -12,9 +12,6 @@ public class VehicleinfoServiceImpl implements com.garage.service.VehicleinfoSer
 	public List<Vehicleinfo> allInfoService() throws VehicleinfoException {
 		
 		VehicleinfoDAOImpl infoOp = new VehicleinfoDAOImpl();
-		
-		return infoOp.allTypes();
-		
+		return infoOp.allTypes();	
 	}
-	
 }

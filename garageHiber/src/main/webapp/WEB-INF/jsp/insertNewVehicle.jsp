@@ -22,9 +22,9 @@
 		 
 		<select id="category" form="insert" name="type">
 			<c:forEach items="${list}" var="type">
-				<option value="${type.description}+${type.idType}">${type.description}</option>
+				<option value="${type.description}+${type.vehicletype}">${type.description}</option>
 			</c:forEach>
-		</select><br> <br> 
+		</select><br> <br>  
 		
 		<input type="submit" value="Insert">&emsp;
 		<a href="${pageContext.request.contextPath}/login?username=${sessionScope.username}&password=${sessionScope.password}&alert=no">SEARCH AGAIN</a> &emsp; 

@@ -1,15 +1,19 @@
 package com.garage.dao.impl;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List; 
 
 import com.garage.dao.TransactionManager;
 import com.garage.dao.UserDAO;
 import com.garage.exception.UserException;
 import com.garage.model.User;
 
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl implements UserDAO { 
 
+	
+//	@Autowired
+//	private TransactionManager<User> txMan;
+	
 	@Override
 	public boolean registerUser(User user) throws UserException {
 

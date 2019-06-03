@@ -79,6 +79,6 @@ public class Vehicleinfo implements java.io.Serializable {
 	public String toString() {
 		return "Vehicleinfo [vehicletype=" + vehicletype + ", description=" + description + ", vehicles=" + vehicles
 				+ "]";
-	}
+	}  
 
-}
+}    

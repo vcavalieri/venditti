@@ -31,10 +31,10 @@ public class SingletonHiberUtil {
 		if (sessionFactory == null) {
 
 			try {
-  
+   
 				// Create registry
 				registry = new StandardServiceRegistryBuilder().configure().build();
-
+ 
 				// Create MetadataSources
 				MetadataSources sources = new MetadataSources(registry);
 

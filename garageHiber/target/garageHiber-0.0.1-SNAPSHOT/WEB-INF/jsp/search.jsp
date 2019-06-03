@@ -25,19 +25,21 @@
 		<input type="text" name="licenseplate" id="licenseplate"><br> <br> 
 		<label for="brand"> Brand: </label> 
 		<input type="text" name="brand" id="brand"><br> <br> 
-		<input type="submit" value="Search for Vehicles" /> &emsp; 
-	</form>
-	
-	<br><br>
+		<label for="description">Category: </label> 
 		
-	<form id = "searchpren" method="GET" action="available">
-		<label for="rentend"> Your Rent Will Starts On: </label> 
-		<br><input type="text" name="rentend" id="rentend"><br> <br> 
-		<input type="submit" value="Search for Prenotations" /> &emsp; 
-	</form>
-	<br><br>
-		<a href="${pageContext.request.contextPath}/myRentedVehicles?p=1">MY PRENOTATIONS</a> &emsp;
+		<select id="description" form="searchform" name="description">
+			<option value = "">Not Specified</option>
+			<c:forEach var="typeitemlist" items="${typelist}">
+				<option value="${typeitemlist.description}">${typeitemlist.description}</option>
+			</c:forEach>
+		</select> <br><br> 
+		
+		<label for="rentend"> Rent Starts On: </label> 
+		<input type="text" name="rentend" id="rentend"><br> <br> 
+		<input type="submit" value="Search" /> &emsp; 
+		<a href="${pageContext.request.contextPath}/myRentedVehicles?p=1">MY PRENOTATIONS</a> &emsp; 
 		<a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
+	</form>
 
 	<c:if test="${not empty message}">
 		<c:if test = "${param.alert ne 'no'}">
@@ -46,7 +48,7 @@
 			alert(message);
 		</script>
 		</c:if>
-	</c:if> 
+	</c:if>
 
 	<script>
 		$(function() {

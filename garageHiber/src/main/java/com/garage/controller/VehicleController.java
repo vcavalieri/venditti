@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.garage.exception.PrenotationException;
 import com.garage.exception.VehicleException;
 import com.garage.exception.VehicleinfoException;
 import com.garage.model.SearchFilter;
 import com.garage.model.Vehicle;
 import com.garage.model.Vehicleinfo;
-import com.garage.service.impl.PrenotationServiceImpl;
 import com.garage.service.impl.VehicleServiceImpl;
 import com.garage.service.impl.VehicleinfoServiceImpl;
 
@@ -33,9 +31,8 @@ public class VehicleController {
 
 		@SuppressWarnings("unused")
 		String message = null;
-		List<Vehicle> vehicleList = new ArrayList<Vehicle>();
+		List<Vehicle> list = new ArrayList<Vehicle>();
 		VehicleServiceImpl vehicleOp = new VehicleServiceImpl();
-		PrenotationServiceImpl prenOp = new PrenotationServiceImpl();
 		try {
 			SearchFilter filter = new SearchFilter();
 			if (id != null && id != "") {
@@ -45,20 +42,13 @@ public class VehicleController {
 			}
 			filter.setLicensePlate(licensePlate);
 			filter.setBrand(brand);
-			filter.setDescription(description);
-			if (rentEnd != null && rentEnd != "") {
-				filter.setRentEnd(prenOp.parseDataToSql(rentEnd));
-			}
-			vehicleList = vehicleOp.searchVehicleService(filter);
-			if (!vehicleList.isEmpty()) {
-				model.addAttribute("vehicles", vehicleList);
+			list = vehicleOp.searchVehicleService(filter);
+			if (!list.isEmpty()) {
+				model.addAttribute("vehicles", list);
 			} else {
 				message = "There are no Results!";
 			}
 		} catch (VehicleException e) {
-			message = e.getMessage();
-			e.printStackTrace();
-		} catch (PrenotationException e) {
 			message = e.getMessage();
 			e.printStackTrace();
 		} finally {
@@ -67,7 +57,7 @@ public class VehicleController {
 				req.getSession().setAttribute("rentstart", rentEnd);
 			}
 		}
-		return "showVehicles";
+		return "showVehicle";
 	}
 
 	@RequestMapping(value = "/deleteVehicle", method = RequestMethod.GET)
@@ -129,6 +119,7 @@ public class VehicleController {
 		} finally {
 			model.addAttribute("message", message);
 		}
-		return "insertNewVehicle";
+		return "insertNewVehicle";   
 	}
 }
+ 

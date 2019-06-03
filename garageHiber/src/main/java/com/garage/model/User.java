@@ -62,7 +62,7 @@ public class User implements java.io.Serializable {
 		this.iduser = iduser;
 	}
 
-	@Column(name = "firstname", nullable = false, length = 45)
+	@Column(name = "firstname", nullable = true, length = 45)
 	public String getFirstname() {
 		return this.firstname;
 	}
@@ -71,7 +71,7 @@ public class User implements java.io.Serializable {
 		this.firstname = firstname;
 	}
 
-	@Column(name = "lastname", nullable = false, length = 45)
+	@Column(name = "lastname", nullable = true, length = 45)
 	public String getLastname() {
 		return this.lastname;
 	}
@@ -89,7 +89,7 @@ public class User implements java.io.Serializable {
 		this.username = username;
 	}
 
-	@Column(name = "password", nullable = false, length = 45)
+	@Column(name = "password", nullable = true, length = 45)
 	public String getPassword() {
 		return this.password;
 	}

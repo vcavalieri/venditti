@@ -1,7 +1,6 @@
 package com.garage.service.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class PrenotationServiceImpl implements PrenotationService {
 		if (rentStart != null && rentEnd != null) {
 			List<Prenotation> prenList = new ArrayList<Prenotation>();
 			List<Boolean> boolList = new ArrayList<Boolean>();
-			sqlStart = parseDataToSql(rentStart);
-			sqlEnd = parseDataToSql(rentEnd);
+			sqlStart = PrenotationService.parseDataToSql(rentStart);
+			sqlEnd = PrenotationService.parseDataToSql(rentEnd);
 			if (fk_vehicle != null) {
 				vehicle.setIdvehicle(idVehi);
 				prenList = prenSpecificVehicleService(vehicle);
@@ -75,7 +74,7 @@ public class PrenotationServiceImpl implements PrenotationService {
 
 		String message = null;
 		PrenotationDAOImpl prenOp = new PrenotationDAOImpl();
-		boolean result = prenOp.deletePrenotation(pren);
+		boolean result = prenOp.deletePrenotation(pren);  
 		if (result) {
 			message = "Prenotation Succesfully Deleted!";
 		} else {
@@ -97,22 +96,9 @@ public class PrenotationServiceImpl implements PrenotationService {
 	}
 
 	@Override
-	public java.sql.Date parseDataToSql(String toParse) throws PrenotationException {
+	public List<Prenotation> availablePrenotationService(Date date) throws PrenotationException {
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		String[] dateArr = { null, null, null };
-		java.sql.Date parsedToSql = null;
-		dateArr = toParse.split("/");
-		if (dateArr != null) {
-			toParse = dateArr[2] + "-" + dateArr[0] + "-" + dateArr[1];
-			java.util.Date parsedToUtil = null;
-			try {
-				parsedToUtil = format.parse(toParse);
-			} catch (ParseException e) {
-				throw new PrenotationException(e);
-			}
-			parsedToSql = new java.sql.Date(parsedToUtil.getTime());
-		}
-		return parsedToSql;
+		PrenotationDAOImpl prenOp = new PrenotationDAOImpl();
+		return prenOp.availablePrenotation(date);
 	}
 }

@@ -1,7 +1,7 @@
 package com.garage.controller;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List; 
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +15,7 @@ import com.garage.exception.PrenotationException;
 import com.garage.model.Prenotation;
 import com.garage.model.User;
 import com.garage.model.Vehicle;
+import com.garage.service.PrenotationService;
 import com.garage.service.impl.PrenotationServiceImpl;
 
 @Controller
@@ -36,33 +37,37 @@ public class PrenotationController {
 			e.printStackTrace();
 		} finally {
 			if (!prenList.isEmpty()) {
-				model.addAttribute("vehicles", prenList);
+				model.addAttribute("prenotations", prenList);
 			} else {
 				message = "You have no Rented Vehicles!";
 			}
 			model.addAttribute("message", message);
 		}
-		return "showVehicles";
+		return "myPrenotations";
 	}
 
 	@RequestMapping(value = "/deletePrenotation", method = RequestMethod.GET)
 	public String deletePrenotation(@RequestParam(value = "idprenotation", required = false) String idPrenotation,
+			@RequestParam(value = "rentstart", required = false) String rentstart,
 			Model model, HttpServletRequest req) {
 
 		String message = null;
 		PrenotationServiceImpl prenOp = new PrenotationServiceImpl();
 		try {
 			Prenotation pren = new Prenotation();
-			pren.setIdprenotation(Integer.parseInt(idPrenotation));
-			prenOp.deletePrenotationService(pren);
+			if((rentstart != null && rentstart != "")  && (idPrenotation != null && idPrenotation != "")) {
+				pren.setIdprenotation(Integer.parseInt(idPrenotation));
+				pren.setRentstart(java.sql.Date.valueOf(rentstart));
+				prenOp.deletePrenotationService(pren);				
+			}    
 		} catch (PrenotationException e) {
 			message = e.getMessage();
 			e.printStackTrace();
-			model.addAttribute("message", message);
+			model.addAttribute("message", message); 
 		}
 		return "search";
 	}
-
+    
 	@RequestMapping(value = "/insertPrenotation", method = RequestMethod.GET)
 	public String insertPrenotation(@RequestParam(value = "idvehicle", required = false) String idVehicle,
 			@RequestParam(value = "rentstart", required = false) String rentStart,
@@ -83,9 +88,38 @@ public class PrenotationController {
 			message = e.getMessage();
 			e.printStackTrace();
 		} finally {
-			model.addAttribute("vehicles",prenList);
+			model.addAttribute("prenotations",prenList);
 			model.addAttribute("message", message);
 		}
 		return "insertNewPrenotation";
 	}
+	
+	@RequestMapping(value = "/available", method = RequestMethod.GET)
+	public String availablePrenotations(@RequestParam(value = "rentend", required = false) String rentend,
+			Model model, HttpServletRequest req) {
+		
+		String message = null;
+		java.sql.Date date = null;
+		List<Prenotation> prenList = new ArrayList<Prenotation>();
+		PrenotationServiceImpl prenOp = new PrenotationServiceImpl();
+		if(rentend != null && rentend != "") {
+			try {
+				date = PrenotationService.parseDataToSql(rentend);
+			} catch (PrenotationException e) {
+				e.printStackTrace();
+				message = e.getMessage();
+				model.addAttribute("message",message);
+			}
+			try {
+				prenList = prenOp.availablePrenotationService(date);
+			}catch(PrenotationException e) {
+				e.printStackTrace();
+				message = e.getMessage();
+			}finally {
+				model.addAttribute("prenotations",prenList);
+				req.getSession().setAttribute("rentstartdate", date);
+			}
+		}
+		return "availablePrenotations";  
+	}  
 }

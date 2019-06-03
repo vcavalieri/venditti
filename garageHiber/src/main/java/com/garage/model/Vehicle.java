@@ -62,7 +62,7 @@ public class Vehicle implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_vehicletype", nullable = true)
+	@JoinColumn(name = "fk_vehicletype", nullable = false)
 	public Vehicleinfo getVehicleinfo() {
 		return this.vehicleinfo;
 	}
@@ -80,7 +80,7 @@ public class Vehicle implements java.io.Serializable {
 		this.licenseplate = licenseplate;
 	}
 
-	@Column(name = "brand", nullable = false, length = 45)
+	@Column(name = "brand", nullable = true, length = 45)
 	public String getBrand() {
 		return this.brand;
 	}

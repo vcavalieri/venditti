@@ -1,8 +1,5 @@
 package com.garage.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -11,11 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.garage.exception.UserException;
-import com.garage.exception.VehicleinfoException;
 import com.garage.model.User;
-import com.garage.model.Vehicleinfo;
 import com.garage.service.impl.UserServiceImpl;
-import com.garage.service.impl.VehicleinfoServiceImpl;
 
 @Controller
 public class UserController {
@@ -57,7 +51,6 @@ public class UserController {
 		return redirect;
 	}
 
-	@SuppressWarnings({ "unused" })
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginUser(@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "password", required = false) String password, Model model, HttpServletRequest req) {
@@ -72,21 +65,7 @@ public class UserController {
 			loginData = userOp.loginService(user);
 			if (loginData[0] != null) {
 				if (loginData[0].equals("Login Succesfully Done!")) {
-					try {
-						VehicleinfoServiceImpl typeOp = new VehicleinfoServiceImpl();
-						List<Vehicleinfo> typeList = new ArrayList<Vehicleinfo>();
-						typeList = typeOp.allInfoService();
-						if (!typeList.isEmpty()) {
-							model.addAttribute("typelist", typeList);
-						}
-					} catch (VehicleinfoException e1) {
-						String message = e1.getMessage();
-						e1.printStackTrace();
-					} finally {
-						req.getSession().setAttribute("username", username);
-						req.getSession().setAttribute("password", password);
-						req.getSession().setAttribute("iduser", loginData[1]);
-					}
+
 					redirect = "search";
 				}
 			}
@@ -99,6 +78,9 @@ public class UserController {
 			if (loginData != null) {
 				model.addAttribute("message", loginData[0]);
 			}
+			req.getSession().setAttribute("username", username);
+			req.getSession().setAttribute("password", password);
+			req.getSession().setAttribute("iduser", loginData[1]);
 		}
 		return redirect;
 	}

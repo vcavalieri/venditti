@@ -1,0 +1,34 @@
+STORED PROCEDURES
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `availablePrenotation`(
+	paramDate date
+)
+BEGIN
+	select * from prenotation
+    inner join vehicle on idvehicle = fk_idvehicle
+	inner join vehicleinfo on vehicletype = fk_vehicletype
+    inner join user on iduser = fk_iduser
+	where (rentend < paramDate and rentstart < paramDate)
+    group by idprenotation;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `myVehicleProcedure`(
+	idutente int
+)
+BEGIN
+	SELECT * FROM prenotation 
+    inner join vehicle on idvehicle = fk_idvehicle
+    inner join vehicleinfo on vehicletype = fk_vehicletype
+    inner join user on iduser = fk_iduser 
+    WHERE iduser = idutente
+    GROUP BY idprenotation;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prenSpecificVehicle`(
+	specificID int
+)
+BEGIN
+	SELECT * FROM prenotation 
+    HAVING fk_idvehicle = specificID
+    AND rentend = (SELECT MAX(rentend) from prenotation);
+END

@@ -15,31 +15,34 @@ table, th, td {
 </head>
 <body>
 
-<c:if test="${prenotations ne null}">
-	<table>
-		<thead>
-			<tr>
-			<td>IdVehicle</td>
-			<td>IdPrenotation</td>
-			<td></td>
-			</tr>
-		</thead>
-		
-		<tbody>
-		<c:forEach items="${prenotations}" var="itemlist">
-			<tr>
-			<td>&nbsp;${itemlist.vehicle.idvehicle}&nbsp;</td>
-			<td>&nbsp;${itemlist.idprenotation}&nbsp;</td>
-			<td>&nbsp;<a href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.vehicle.idvehicle}&licenseplate=${itemlist.vehicle.licenseplate}">RENT&nbsp;</a></td>
-			</tr>
-		</c:forEach>
-		</tbody>
-	</table>
-</c:if>
-	<br><br>
-	<a href="${pageContext.request.contextPath}/login?username=${sessionScope.username}&password=${sessionScope.password}&alert=no">SEARCH
+	<c:if test="${prenotations ne null}">
+		<table>
+			<thead>
+				<tr>
+					<td>IdVehicle</td>
+					<td>IdPrenotation</td>
+					<td></td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<c:forEach items="${prenotations}" var="itemlist">
+					<tr>
+						<td>&nbsp;${itemlist.vehicle.idvehicle}&nbsp;</td>
+						<td>&nbsp;${itemlist.idprenotation}&nbsp;</td>
+						<td>&nbsp;<a
+							href="${pageContext.request.contextPath}/insertPrenotation?idvehicle=${itemlist.vehicle.idvehicle}&licenseplate=${itemlist.vehicle.licenseplate}">RENT&nbsp;</a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</c:if>
+	<br>
+	<br>
+	<a
+		href="${pageContext.request.contextPath}/login?username=${sessionScope.username}&password=${sessionScope.password}&alert=no">SEARCH
 		AGAIN</a> &emsp;
 	<a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
-	
+
 </body>
 </html>

@@ -1,10 +1,11 @@
 package com.garage.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,10 @@ import com.garage.service.impl.VehicleinfoServiceImpl;
 @Controller
 public class VehicleController {
 
+	@Autowired
+	private ApplicationContext ctx;
+	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/showVehicle", method = RequestMethod.GET)
 	public String showVehicle(@RequestParam(value = "idvehicle", required = false) String id,
 			@RequestParam(value = "licenseplate", required = false) String licensePlate,
@@ -31,10 +36,10 @@ public class VehicleController {
 
 		@SuppressWarnings("unused")
 		String message = null;
-		List<Vehicle> list = new ArrayList<Vehicle>();
-		VehicleServiceImpl vehicleOp = new VehicleServiceImpl();
+		List<Vehicle> list = (List<Vehicle>) ctx.getBean("vehicleList");
+		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
 		try {
-			SearchFilter filter = new SearchFilter();
+			SearchFilter filter = ctx.getBean(SearchFilter.class);
 			if (id != null && id != "") {
 				filter.setIdVehicle(Integer.parseInt(id));
 			} else {
@@ -65,8 +70,8 @@ public class VehicleController {
 			@RequestParam(value = "licenseplate", required = false) String licensePlate, Model model) {
 
 		String message = null;
-		Vehicle vehicle = new Vehicle();
-		VehicleServiceImpl vehicleOp = new VehicleServiceImpl();
+		Vehicle vehicle = ctx.getBean(Vehicle.class);
+		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
 		if (licensePlate != null) {
 			vehicle.setLicenseplate(licensePlate);
 			try {
@@ -81,15 +86,16 @@ public class VehicleController {
 		return "search"; 
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/insertVehicle", method = RequestMethod.GET)
 	public String insertVehicle(@RequestParam(value = "licenseplate", required = false) String licensePlate,
 			@RequestParam(value = "brand", required = false) String brand,
 			@RequestParam(value = "type", required = false) String type, Model model) {
 
 		String message = null;
-		VehicleServiceImpl vehicleOp = new VehicleServiceImpl();
-		VehicleinfoServiceImpl typeOp = new VehicleinfoServiceImpl();
-		List<Vehicleinfo> typesList = new ArrayList<Vehicleinfo>();
+		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
+		VehicleinfoServiceImpl typeOp = ctx.getBean(VehicleinfoServiceImpl.class);
+		List<Vehicleinfo> typesList = (List<Vehicleinfo>) ctx.getBean("vehicleinfoList");
 		try {
 			typesList = typeOp.allInfoService();
 			if (!typesList.isEmpty()) {
@@ -98,8 +104,8 @@ public class VehicleController {
 			if (licensePlate != null && licensePlate != "") {
 				if (brand != null && brand != "") {
 					if (type != null && type != "") {
-						Vehicle vehicle = new Vehicle();
-						Vehicleinfo info = new Vehicleinfo();
+						Vehicle vehicle = ctx.getBean(Vehicle.class);
+						Vehicleinfo info = ctx.getBean(Vehicleinfo.class);
 						vehicle.setLicenseplate(licensePlate);
 						vehicle.setBrand(brand);
 						String[] splitted = type.split("\\+");

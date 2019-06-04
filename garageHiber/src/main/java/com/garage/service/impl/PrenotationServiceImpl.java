@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+
 import com.garage.dao.impl.PrenotationDAOImpl;
 import com.garage.exception.PrenotationException;
 import com.garage.model.Prenotation;
@@ -13,6 +16,10 @@ import com.garage.service.PrenotationService;
 
 public class PrenotationServiceImpl implements PrenotationService {
 
+	@Autowired
+	private ApplicationContext ctx;
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public String insertPrenotationService(int fk_user, String fk_vehicle, String rentStart, String rentEnd)
 			throws PrenotationException {
@@ -22,10 +29,10 @@ public class PrenotationServiceImpl implements PrenotationService {
 		String message = null;
 		java.sql.Date sqlStart = null;
 		java.sql.Date sqlEnd = null;
-		PrenotationDAOImpl prenotationImpl = new PrenotationDAOImpl();
-		Vehicle vehicle = new Vehicle();
+		PrenotationDAOImpl prenotationImpl = ctx.getBean(PrenotationDAOImpl.class);
+		Vehicle vehicle = ctx.getBean(Vehicle.class);
 		if (rentStart != null && rentEnd != null) {
-			List<Prenotation> prenList = new ArrayList<Prenotation>();
+			List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
 			List<Boolean> boolList = new ArrayList<Boolean>();
 			sqlStart = PrenotationService.parseDataToSql(rentStart);
 			sqlEnd = PrenotationService.parseDataToSql(rentEnd);
@@ -52,7 +59,7 @@ public class PrenotationServiceImpl implements PrenotationService {
 						count++;
 					}
 				}
-				User user = new User();
+				User user = ctx.getBean(User.class);
 				user.setIduser(fk_user);
 				if (count == boolList.size()) {
 					result = prenotationImpl.insertPrenotation(user, vehicle, sqlStart, sqlEnd);
@@ -73,7 +80,7 @@ public class PrenotationServiceImpl implements PrenotationService {
 	public String deletePrenotationService(Prenotation pren) throws PrenotationException {
 
 		String message = null;
-		PrenotationDAOImpl prenOp = new PrenotationDAOImpl();
+		PrenotationDAOImpl prenOp = ctx.getBean(PrenotationDAOImpl.class);
 		boolean result = prenOp.deletePrenotation(pren);  
 		if (result) {
 			message = "Prenotation Succesfully Deleted!";
@@ -85,20 +92,19 @@ public class PrenotationServiceImpl implements PrenotationService {
 
 	@Override
 	public List<Prenotation> myPrenotationService(User user) throws PrenotationException {
-		PrenotationDAOImpl prenOp = new PrenotationDAOImpl();
+		PrenotationDAOImpl prenOp = ctx.getBean(PrenotationDAOImpl.class);
 		return prenOp.myVehiclePrenotations(user);
 	}
 
 	@Override
 	public List<Prenotation> prenSpecificVehicleService(Vehicle vehicle) throws PrenotationException {
-		PrenotationDAOImpl prenOp = new PrenotationDAOImpl();
+		PrenotationDAOImpl prenOp = ctx.getBean(PrenotationDAOImpl.class);
 		return prenOp.prenSpecificVehicle(vehicle);
 	}
 
 	@Override
 	public List<Prenotation> availablePrenotationService(Date date) throws PrenotationException {
-
-		PrenotationDAOImpl prenOp = new PrenotationDAOImpl();
+		PrenotationDAOImpl prenOp = ctx.getBean(PrenotationDAOImpl.class);
 		return prenOp.availablePrenotation(date);
 	}
 }

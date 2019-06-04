@@ -2,6 +2,8 @@ package com.garage.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,9 @@ import com.garage.service.impl.UserServiceImpl;
 @Controller
 public class UserController {
 
+	@Autowired
+	private ApplicationContext ctx;
+	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String registerUser(@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "firstname", required = false) String first,
@@ -22,13 +27,13 @@ public class UserController {
 
 		String message = null;
 		String redirect = "registerUser";
-		UserServiceImpl userOp = new UserServiceImpl();
+		UserServiceImpl userOp = ctx.getBean(UserServiceImpl.class);
 		try {
 			if (username != null && username != "") {
 				if (password != null && password != "") {
 					if (first != null && first != "") {
 						if (last != null && last != "") {
-							User user = new User();
+							User user = ctx.getBean(User.class);
 							user.setFirstname(first);
 							user.setLastname(last);
 							user.setPassword(password);
@@ -57,15 +62,14 @@ public class UserController {
 
 		String[] loginData = { null, null };
 		String redirect = "index";
-		UserServiceImpl userOp = new UserServiceImpl();
+		UserServiceImpl userOp = ctx.getBean(UserServiceImpl.class);
 		try {
-			User user = new User();
+			User user = ctx.getBean(User.class);
 			user.setPassword(password);
 			user.setUsername(username);
 			loginData = userOp.loginService(user);
 			if (loginData[0] != null) {
 				if (loginData[0].equals("Login Succesfully Done!")) {
-
 					redirect = "search";
 				}
 			}

@@ -1,22 +1,119 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-       
- <beans xmlns = "http://www.springframework.org/schema/beans"
-   xmlns:context = "http://www.springframework.org/schema/context"
-   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation = "http://www.springframework.org/schema/beans     
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans     
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
    http://www.springframework.org/schema/context 
    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-   <context:component-scan base-package = "com.garage.controller" />
+	<context:component-scan
+		base-package="com.garage.*, com.garage.dao.impl.*" />
 
-	
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 
-   <bean class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <property name = "prefix" value = "/WEB-INF/jsp/" />
-      <property name = "suffix" value = ".jsp" />
-   </bean>
-   
-   
-   
+	<!-- MODEL BEANS -->
+
+	<bean class="com.garage.model.Prenotation" name="prenotation"
+		id="prenotation" scope="prototype"></bean>
+	<bean class="com.garage.model.User" name="user" id="user"
+		scope="prototype"></bean>
+	<bean class="com.garage.model.Vehicle" name="vehicle" id="vehicle"
+		scope="prototype"></bean>
+	<bean class="com.garage.model.Vehicleinfo" name="vehicleinfo"
+		id="vehicleinfo" scope="prototype"></bean>
+	<bean class="com.garage.model.SearchFilter" name="filter"
+		id="filter" scope="prototype"></bean>
+	<bean class="com.garage.model.SingletonHiberUtil" name="hiberutil"
+		id="hiberutil" scope="prototype"></bean>
+
+	<!-- DAOIMPL BEANS -->
+
+	<bean class="com.garage.dao.impl.PrenotationDAOImpl"
+		name="prenDAO" id="prenDAO" scope="singleton"></bean>
+	<bean class="com.garage.dao.impl.UserDAOImpl" name="userDAO"
+		id="userDAO" scope="singleton"></bean>
+	<bean class="com.garage.dao.impl.VehicleDAOImpl" name="vehicleDAO"
+		id="vehicleDAO" scope="singleton"></bean>
+	<bean class="com.garage.dao.impl.VehicleinfoDAOImpl"
+		name="vehicleinfoDAO" id="vehicleinfoDAO" scope="singleton"></bean>
+
+	<!-- TRANSACTION MANAGER BEANS -->
+
+	<bean id="txManPren" name="txManPren"
+		class="com.garage.dao.TransactionManager" scope="singleton">
+		<constructor-arg>
+			<value>com.garage.model.Prenotation</value>
+		</constructor-arg>
+	</bean>
+	<bean id="txManUser" name="txManUser"
+		class="com.garage.dao.TransactionManager" scope="singleton">
+		<constructor-arg>
+			<value>com.garage.model.User</value>
+		</constructor-arg>
+	</bean>
+	<bean id="txManVehicle" name="txManVehicle"
+		class="com.garage.dao.TransactionManager" scope="singleton">
+		<constructor-arg>
+			<value>com.garage.model.Vehicle</value>
+		</constructor-arg>
+	</bean>
+	<bean id="txManVehicleinfo" name="txManVehicleinfo"
+		class="com.garage.dao.TransactionManager" scope="singleton">
+		<constructor-arg>
+			<value>com.garage.model.Vehicleinfo</value>
+		</constructor-arg>
+	</bean>
+	<!-- SERVICEIMPL BEANS -->
+
+	<bean class="com.garage.service.impl.PrenotationServiceImpl"
+		name="prenService" id="prenService" scope="singleton"></bean>
+	<bean class="com.garage.service.impl.UserServiceImpl"
+		name="userService" id="userService" scope="singleton"></bean>
+	<bean class="com.garage.service.impl.VehicleServiceImpl"
+		name="vehicleService" id="vehicleService" scope="singleton"></bean>
+	<bean class="com.garage.service.impl.VehicleinfoServiceImpl"
+		name="vehicleinfoService" id="vehicleinfoService" scope="singleton"></bean>
+
+	<!-- LIST BEANS -->
+
+	<bean class="java.util.ArrayList" name="prenList" id="prenList"
+		scope="prototype">
+		<constructor-arg>
+			<list>
+				<ref bean="prenotation" />
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean class="java.util.ArrayList" name="userList" id="userList"
+		scope="prototype">
+		<constructor-arg>
+			<list>
+				<ref bean="user" />
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean class="java.util.ArrayList" name="vehicleList"
+		id="vehicleList" scope="prototype">
+		<constructor-arg>
+			<list>
+				<ref bean="vehicle" />
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean class="java.util.ArrayList" name="vehicleinfoList"
+		id="vehicleinfoList" scope="prototype">
+		<constructor-arg>
+			<list>
+				<ref bean="vehicleinfo" />
+			</list>
+		</constructor-arg>
+	</bean>
+
 </beans>

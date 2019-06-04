@@ -1,7 +1,9 @@
 package com.garage.dao.impl;
+ 
+import java.util.List;
 
-import java.util.ArrayList;
-import java.util.List; 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import com.garage.dao.TransactionManager;
 import com.garage.dao.UserDAO;
@@ -11,15 +13,16 @@ import com.garage.model.User;
 public class UserDAOImpl implements UserDAO { 
 
 	
-//	@Autowired
-//	private TransactionManager<User> txMan;
+	@Autowired
+	private ApplicationContext ctx;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean registerUser(User user) throws UserException {
 
 		boolean status = false;
 		try {
-			TransactionManager<User> txMan = new TransactionManager<User>();
+			TransactionManager<User> txMan = (TransactionManager<User>) ctx.getBean("txManUser");
 			status = txMan.insert(user);  
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -28,15 +31,16 @@ public class UserDAOImpl implements UserDAO {
 		return status;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String[] loginUser(User user) throws UserException {
 
 		Boolean status = false;
 		String[] loginData = { null, null };
-		User userQ = new User();
-		List<User> userList = new ArrayList<User>();
+		User userQ = ctx.getBean(User.class);
+		List<User> userList = (List<User>) ctx.getBean("userList");
 		try {
-			TransactionManager<User> txMan = new TransactionManager<User>();
+			TransactionManager<User> txMan = (TransactionManager<User>) ctx.getBean("txManUser");
 			userList = txMan.search(user);
 			for (User users : userList) {
 				userQ = users;

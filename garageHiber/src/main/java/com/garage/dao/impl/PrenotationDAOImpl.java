@@ -1,12 +1,13 @@
 package com.garage.dao.impl;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import com.garage.dao.PrenotationDAO;
 import com.garage.dao.TransactionManager;
@@ -18,12 +19,16 @@ import com.garage.model.Vehicle;
 
 public class PrenotationDAOImpl implements PrenotationDAO {
 
+	@Autowired
+	private ApplicationContext ctx;
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean deletePrenotation(Prenotation pren) throws PrenotationException {
 
 		boolean status = false;
 		try {
-			TransactionManager<Prenotation> txMan = new TransactionManager<Prenotation>();
+			TransactionManager<Prenotation> txMan = (TransactionManager<Prenotation>) ctx.getBean("txManPren");
 			List<Prenotation> prenList = txMan.search(pren);
 			for (Prenotation prens : prenList) {
 				pren = null;
@@ -37,18 +42,19 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		return status;
 	}
   
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean insertPrenotation(User user, Vehicle vehicle, Date rentStart, Date rentEnd)
 			throws PrenotationException {
 
 		boolean status = false;
-		Prenotation pren = new Prenotation();
+		Prenotation pren = ctx.getBean(Prenotation.class);
 		pren.setUser(user);
 		pren.setVehicle(vehicle);
 		pren.setRentstart(rentStart);
 		pren.setRentend(rentEnd);
 		try {
-			TransactionManager<Prenotation> txMan = new TransactionManager<Prenotation>();
+			TransactionManager<Prenotation> txMan = (TransactionManager<Prenotation>) ctx.getBean("txManPren");
 			status = txMan.insert(pren);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,7 +67,7 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 	@Override
 	public List<Prenotation> myVehiclePrenotations(User user) throws PrenotationException {
 
-		List<Prenotation> prenList = new ArrayList<Prenotation>();
+		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -80,11 +86,11 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		return prenList;
 	}
 
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Prenotation> prenSpecificVehicle(Vehicle vehicle) throws PrenotationException {
-		List<Object[]> list;
-		List<Prenotation> prenList = new ArrayList<Prenotation>();
+		
+		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -107,7 +113,7 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 	@Override
 	public List<Prenotation> availablePrenotation(Date date) throws PrenotationException {
 
-		List<Prenotation> prenList = new ArrayList<Prenotation>();
+		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -125,4 +131,4 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		}
 		return prenList;
 	}
-}
+} 

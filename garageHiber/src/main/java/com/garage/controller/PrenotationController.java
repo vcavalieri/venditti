@@ -1,10 +1,11 @@
 package com.garage.controller;
 
-import java.util.ArrayList;
 import java.util.List; 
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,16 +21,20 @@ import com.garage.service.impl.PrenotationServiceImpl;
 
 @Controller
 public class PrenotationController {
-
+	
+	@Autowired
+	private ApplicationContext ctx;
+	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/myRentedVehicles", method = RequestMethod.GET)
 	public String myVehicles(HttpServletRequest req, Model model) {
 
 		String message = null;
 		int userid = Integer.parseInt((String) req.getSession().getAttribute("iduser"));
-		PrenotationServiceImpl prenOp = new PrenotationServiceImpl();
-		List<Prenotation> prenList = new ArrayList<Prenotation>();
+		PrenotationServiceImpl prenOp = ctx.getBean(PrenotationServiceImpl.class);
+		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
 		try {
-			User user = new User();
+			User user = ctx.getBean(User.class);
 			user.setIduser(userid);
 			prenList = prenOp.myPrenotationService(user);
 		} catch (PrenotationException e) {
@@ -45,16 +50,16 @@ public class PrenotationController {
 		}
 		return "myPrenotations";
 	}
-
+ 
 	@RequestMapping(value = "/deletePrenotation", method = RequestMethod.GET)
 	public String deletePrenotation(@RequestParam(value = "idprenotation", required = false) String idPrenotation,
 			@RequestParam(value = "rentstart", required = false) String rentstart,
 			Model model, HttpServletRequest req) {
 
 		String message = null;
-		PrenotationServiceImpl prenOp = new PrenotationServiceImpl();
+		PrenotationServiceImpl prenOp = ctx.getBean(PrenotationServiceImpl.class);
 		try {
-			Prenotation pren = new Prenotation();
+			Prenotation pren = ctx.getBean(Prenotation.class);
 			if((rentstart != null && rentstart != "")  && (idPrenotation != null && idPrenotation != "")) {
 				pren.setIdprenotation(Integer.parseInt(idPrenotation));
 				pren.setRentstart(java.sql.Date.valueOf(rentstart));
@@ -68,15 +73,16 @@ public class PrenotationController {
 		return "search";
 	}
     
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/insertPrenotation", method = RequestMethod.GET)
 	public String insertPrenotation(@RequestParam(value = "idvehicle", required = false) String idVehicle,
 			@RequestParam(value = "rentstart", required = false) String rentStart,
 			@RequestParam(value = "rentend", required = false) String rentEnd, HttpServletRequest req, Model model) {
 
 		String message = null;
-		PrenotationServiceImpl prenOp = new PrenotationServiceImpl();	
-		List<Prenotation> prenList = new ArrayList<Prenotation>();	
-		Vehicle vehicle = new Vehicle();
+		PrenotationServiceImpl prenOp = ctx.getBean(PrenotationServiceImpl.class);
+		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
+		Vehicle vehicle = ctx.getBean(Vehicle.class);
 		try {
 			int idUser = Integer.parseInt((String) req.getSession().getAttribute("iduser"));
 			if(idVehicle != null && idVehicle != "") {
@@ -94,14 +100,15 @@ public class PrenotationController {
 		return "insertNewPrenotation";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/available", method = RequestMethod.GET)
 	public String availablePrenotations(@RequestParam(value = "rentend", required = false) String rentend,
 			Model model, HttpServletRequest req) {
 		
 		String message = null;
 		java.sql.Date date = null;
-		List<Prenotation> prenList = new ArrayList<Prenotation>();
-		PrenotationServiceImpl prenOp = new PrenotationServiceImpl();
+		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
+		PrenotationServiceImpl prenOp = ctx.getBean(PrenotationServiceImpl.class);
 		if(rentend != null && rentend != "") {
 			try {
 				date = PrenotationService.parseDataToSql(rentend);
@@ -121,5 +128,5 @@ public class PrenotationController {
 			}
 		}
 		return "availablePrenotations";  
-	}  
+	}
 }

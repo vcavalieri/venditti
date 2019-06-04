@@ -18,8 +18,9 @@
 <body>
 
 	<form id="formpren" method="GET" action="insertPrenotation">
-		<label for="datepicker1"> Date of Rent Start:</label> 
-		<input id="datepicker1" type="text" value="${sessionScope.rentstart}" name="rentstart"><br> <br> 
+		 Date Format : yyyy-MM-dd<br><br>
+		<label for="datepicker1"> Date of Rent Start : <b>${sessionScope.rentstartdate}</b> </label> 
+		<input id="datepicker1" type="hidden" value="${sessionScope.rentstartdate}" name="rentstart"><br> <br> 
 		<label for="datepicker2">Date of Rent End:</label>  
 		<input type="text" id="datepicker2" name="rentend"><br> <br> 
 		
@@ -45,6 +46,6 @@
 	    $( "#datepicker2" ).datepicker();
 	  } );
 	</script>
-
+  
 </body>
 </html>

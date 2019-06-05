@@ -17,36 +17,30 @@
 
 	<h2>Search:</h2>
 	<br>
-	
-	<form id="searchform" method="GET" action="showVehicle">
-		<label for="idvehicle"> ID Vehicle: </label> 
-		<input type="text" name="idvehicle" id="idvehicle"><br> <br> 
-		<label for="licenseplate">License Plate: </label> 
-		<input type="text" name="licenseplate" id="licenseplate"><br> <br> 
-		<label for="brand"> Brand: </label> 
-		<input type="text" name="brand" id="brand"><br> <br> 
-		<input type="submit" value="Search for Vehicles" /> &emsp; 
-	</form>
-	
-	<br><br>
-		
-	<form id = "searchpren" method="GET" action="available">
-		<label for="rentend"> Your Rent Will Starts On: </label> 
-		<br><input type="text" name="rentend" id="rentend"><br> <br> 
-		<input type="submit" value="Search for Prenotations" /> &emsp; 
-	</form>
-	<br><br>
-		<a href="${pageContext.request.contextPath}/myRentedVehicles?p=1">MY PRENOTATIONS</a> &emsp;
-		<a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
 
-	<c:if test="${not empty message}">
-		<c:if test = "${param.alert ne 'no'}">
-		<script>
-			var message = "${message}";
-			alert(message);
-		</script>
-		</c:if>
-	</c:if> 
+	<form id="searchform" method="GET" action="showVehicle">
+		<label for="idvehicle"> ID Vehicle: </label> <input type="text"
+			name="idvehicle" id="idvehicle"><br> <br> <label
+			for="licenseplate">License Plate: </label> <input type="text"
+			name="licenseplate" id="licenseplate"><br> <br> <label
+			for="brand"> Brand: </label> <input type="text" name="brand"
+			id="brand"><br> <br> <input type="submit"
+			value="Search for Vehicles" /> &emsp;
+	</form>
+
+	<br>
+	<br>
+
+	<form id="searchpren" method="GET" action="available">
+		<label for="rentend"> Your Rent Will Starts On: </label> <br>
+		<input type="text" name="rentend" id="rentend"><br> <br>
+		<input type="submit" value="Search for Prenotations" /> &emsp;
+	</form>
+	<br>
+	<br>
+	<a href="${pageContext.request.contextPath}/myRentedVehicles?p=1">MY
+		PRENOTATIONS</a> &emsp;
+	<a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
 
 	<script>
 		$(function() {

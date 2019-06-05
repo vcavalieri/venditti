@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private ApplicationContext ctx;
-	
+
 	@Override
 	public String[] loginService(User user) throws UserException {
 

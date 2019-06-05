@@ -18,7 +18,7 @@ public class PrenotationServiceImpl implements PrenotationService {
 
 	@Autowired
 	private ApplicationContext ctx;
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public String insertPrenotationService(int fk_user, String fk_vehicle, String rentStart, String rentEnd)
@@ -81,7 +81,7 @@ public class PrenotationServiceImpl implements PrenotationService {
 
 		String message = null;
 		PrenotationDAOImpl prenOp = ctx.getBean(PrenotationDAOImpl.class);
-		boolean result = prenOp.deletePrenotation(pren);  
+		boolean result = prenOp.deletePrenotation(pren);
 		if (result) {
 			message = "Prenotation Succesfully Deleted!";
 		} else {

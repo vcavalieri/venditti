@@ -15,26 +15,26 @@ public class SingletonHiberUtil {
 
 	}
 
-	public static Session getSession() {
+	public Session getSession() {
 		SessionFactory sFactory = getSessionFactory();
 		if (session == null) {
 			session = sFactory.openSession();
-		} else { 
+		} else {
 			session = sFactory.getCurrentSession();
 		}
 		return session;
 	}
- 
+
 	private static SessionFactory getSessionFactory() {
 		SessionFactory sessionFactory = null;
 		StandardServiceRegistry registry = null;
 		if (sessionFactory == null) {
 
 			try {
-   
+
 				// Create registry
 				registry = new StandardServiceRegistryBuilder().configure().build();
- 
+
 				// Create MetadataSources
 				MetadataSources sources = new MetadataSources(registry);
 

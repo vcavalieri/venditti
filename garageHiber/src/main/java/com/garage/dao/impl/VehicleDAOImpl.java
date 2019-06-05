@@ -2,6 +2,8 @@ package com.garage.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,6 +20,8 @@ import com.garage.model.Vehicle;
 
 public class VehicleDAOImpl implements VehicleDAO {
 
+	private static final Log log = LogFactory.getLog(VehicleDAOImpl.class);
+
 	@Autowired
 	private ApplicationContext ctx;
 
@@ -29,8 +33,9 @@ public class VehicleDAOImpl implements VehicleDAO {
 		Session session = null;
 		Transaction tx = null;
 		try {
-			session = SingletonHiberUtil.getSession();
+			session = ctx.getBean(SingletonHiberUtil.class).getSession();
 			tx = session.beginTransaction();
+			log.warn("Transaction started");
 			Criteria criteria = session.createCriteria(Vehicle.class);
 			if (filter.getIdVehicle() != 0) {
 				criteria.add(Restrictions.eq("idvehicle", filter.getIdVehicle()));
@@ -43,10 +48,12 @@ public class VehicleDAOImpl implements VehicleDAO {
 			}
 			toReturn = criteria.list();
 			tx.commit();
+			log.warn("Transaction committed");
 		} catch (Exception e) {
-			if (tx != null)
+			if (tx != null) {
 				tx.rollback();
-			e.printStackTrace();
+				log.error("Transaction rollbacked");
+			}
 			throw e;
 		}
 		return toReturn;
@@ -67,7 +74,6 @@ public class VehicleDAOImpl implements VehicleDAO {
 			}
 			status = txMan.delete(vehicle);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new VehicleException(e);
 		}
 		return status;
@@ -82,7 +88,6 @@ public class VehicleDAOImpl implements VehicleDAO {
 			TransactionManager<Vehicle> txMan = (TransactionManager<Vehicle>) ctx.getBean("txManVehicle");
 			status = txMan.insert(vehicle);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new VehicleException(e);
 		}
 		return status;

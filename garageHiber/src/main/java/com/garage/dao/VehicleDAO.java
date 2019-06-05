@@ -9,7 +9,9 @@ import com.garage.model.Vehicle;
 public interface VehicleDAO {
 
 	public boolean deleteVehicle(Vehicle vehicle) throws VehicleException;
+
 	public boolean insertVehicle(Vehicle vehicle) throws VehicleException;
+
 	public List<Vehicle> searchVehicle(SearchFilter filter) throws VehicleException;
-	
+
 }

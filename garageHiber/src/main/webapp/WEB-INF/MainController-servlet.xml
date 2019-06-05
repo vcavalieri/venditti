@@ -21,15 +21,46 @@
 	<!-- MODEL BEANS -->
 
 	<bean class="com.garage.model.Prenotation" name="prenotation"
-		id="prenotation" scope="prototype"></bean>
+		id="prenotation" scope="prototype">
+<!--	<constructor-arg ref="user" index="1" name="user"></constructor-arg>
+		<constructor-arg ref="vehicle" index="2" name="vehicle"></constructor-arg>
+		<constructor-arg type="java.sql.Date" index="3" name="rentstart"></constructor-arg>
+		<constructor-arg type="java.sql.Date" index="4" name="rentend"></constructor-arg>
+ -->	
+	</bean>
+
 	<bean class="com.garage.model.User" name="user" id="user"
-		scope="prototype"></bean>
+		scope="prototype">
+<!-- 	<constructor-arg type="java.lang.String" index="1" name="firstname"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="2" name="lastname"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="3" name="username"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="4" name="password"></constructor-arg>
+-->
+	</bean>
+
 	<bean class="com.garage.model.Vehicle" name="vehicle" id="vehicle"
-		scope="prototype"></bean>
+		scope="prototype">
+<!-- 	<constructor-arg ref="vehicleinfo" index="1" name="vehicleinfo"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="2" name="licenseplate"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="3" name="brand"></constructor-arg>
+-->
+	</bean>
+
 	<bean class="com.garage.model.Vehicleinfo" name="vehicleinfo"
-		id="vehicleinfo" scope="prototype"></bean>
+		id="vehicleinfo" scope="prototype">
+<!-- 	<constructor-arg type="int" index="1" name="vehicletype"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="2" name="description"></constructor-arg>
+-->
+	</bean>
+	
 	<bean class="com.garage.model.SearchFilter" name="filter"
-		id="filter" scope="prototype"></bean>
+		id="filter" scope="prototype">
+<!-- 	<constructor-arg type="int" index="1" name="idVehicle"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="2" name="licensePlate"></constructor-arg>
+		<constructor-arg type="java.lang.String" index="3" name="brand"></constructor-arg>
+-->
+	</bean>
+
 	<bean class="com.garage.model.SingletonHiberUtil" name="hiberutil"
 		id="hiberutil" scope="prototype"></bean>
 

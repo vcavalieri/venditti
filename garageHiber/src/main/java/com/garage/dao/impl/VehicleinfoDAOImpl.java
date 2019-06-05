@@ -7,14 +7,14 @@ import org.springframework.context.ApplicationContext;
 
 import com.garage.dao.TransactionManager;
 import com.garage.dao.VehicleinfoDAO;
-import com.garage.exception.VehicleinfoException; 
+import com.garage.exception.VehicleinfoException;
 import com.garage.model.Vehicleinfo;
 
 public class VehicleinfoDAOImpl implements VehicleinfoDAO {
- 
+
 	@Autowired
 	private ApplicationContext ctx;
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Vehicleinfo> allTypes() throws VehicleinfoException {
@@ -24,7 +24,6 @@ public class VehicleinfoDAOImpl implements VehicleinfoDAO {
 			TransactionManager<Vehicleinfo> txMan = (TransactionManager<Vehicleinfo>) ctx.getBean("txManVehicleinfo");
 			infoList = txMan.search(new Vehicleinfo());
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new VehicleinfoException(e);
 		}
 		return infoList;

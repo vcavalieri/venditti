@@ -26,7 +26,7 @@ public class Vehicleinfo implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private int vehicletype;
 	private String description;
 	private Set<Vehicle> vehicles = new HashSet<Vehicle>(0);
@@ -39,7 +39,6 @@ public class Vehicleinfo implements java.io.Serializable {
 		this.description = description;
 	}
 
-	
 	public Vehicleinfo(int vehicletype, String description, Set<Vehicle> vehicles) {
 		this.vehicletype = vehicletype;
 		this.description = description;
@@ -79,6 +78,6 @@ public class Vehicleinfo implements java.io.Serializable {
 	public String toString() {
 		return "Vehicleinfo [vehicletype=" + vehicletype + ", description=" + description + ", vehicles=" + vehicles
 				+ "]";
-	}  
+	}
 
-}    
+}

@@ -24,7 +24,7 @@ public class User implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer iduser;
 	private String firstname;
 	private String lastname;
@@ -106,7 +106,7 @@ public class User implements java.io.Serializable {
 	public void setPrenotations(Set<Prenotation> prenotations) {
 		this.prenotations = prenotations;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "User [iduser=" + iduser + ", firstname=" + firstname + ", lastname=" + lastname + ", username="

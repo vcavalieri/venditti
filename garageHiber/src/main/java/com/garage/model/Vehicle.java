@@ -26,7 +26,7 @@ public class Vehicle implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer idvehicle;
 	private Vehicleinfo vehicleinfo;
 	private String licenseplate;

@@ -4,7 +4,8 @@
 <!DOCTYPE html SYSTEM "about:legacy-compat">
 
 <html>
-<link rel="stylesheet" href=C:\Users\salvatore.venditti\eclipse-workspace\Garage\WebContent\WEB-INF\style.css/>
+<link rel="stylesheet"
+	href=C:\Users\salvatore.venditti\eclipse-workspace\Garage\WebContent\WEB-INF\style.css />
 
 <head>
 <title>Home</title>
@@ -12,24 +13,16 @@
 
 <body>
 
-		<h3>Login</h3>
+	<h3>Login</h3>
 	<form id="login" method="GET" action="login">
-
-		<label for="username">Username: </label> 
-		<input type="text" id="username" name="username"><br> <br> 
-		<label for="password">Password: </label> 
-		<input type="password" id="password" name="password"><br> <br>
-		<button class = "btn" type="submit" value="Login" >Login</button>&emsp; 
-		<a href="${pageContext.request.contextPath}/register">SIGN UP</a>
-
+		<label for="username">Username: </label> <input type="text"
+			id="username" name="username"><br> <br> <label
+			for="password">Password: </label> <input type="password"
+			id="password" name="password"><br> <br>
+		<button class="btn" type="submit" value="Login">Login</button>
+		&emsp; <a href="${pageContext.request.contextPath}/register">SIGN
+			UP</a>
 	</form>
-
-	<c:if test="${not empty message}">
-		<script>
-			var message = "${message}";
-			alert(message);
-		</script>
-	</c:if>
 
 </body>
 </html>

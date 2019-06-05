@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -23,9 +25,11 @@ import com.garage.service.impl.VehicleinfoServiceImpl;
 @Controller
 public class VehicleController {
 
+	private static final Log log = LogFactory.getLog(VehicleController.class);
+
 	@Autowired
 	private ApplicationContext ctx;
-	
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/showVehicle", method = RequestMethod.GET)
 	public String showVehicle(@RequestParam(value = "idvehicle", required = false) String id,
@@ -36,6 +40,7 @@ public class VehicleController {
 
 		@SuppressWarnings("unused")
 		String message = null;
+		log.info("Executing /showVehicle from com.garage.controller.VehicleController");
 		List<Vehicle> list = (List<Vehicle>) ctx.getBean("vehicleList");
 		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
 		try {
@@ -47,15 +52,18 @@ public class VehicleController {
 			}
 			filter.setLicensePlate(licensePlate);
 			filter.setBrand(brand);
+			log.warn("Trying to search vehicles...");
 			list = vehicleOp.searchVehicleService(filter);
 			if (!list.isEmpty()) {
+				log.warn("Vehicles found.");
 				model.addAttribute("vehicles", list);
 			} else {
+				log.warn("Vehicles not found.");
 				message = "There are no Results!";
 			}
 		} catch (VehicleException e) {
 			message = e.getMessage();
-			e.printStackTrace();
+			log.error(e);
 		} finally {
 			if (rentEnd != null && rentEnd != "") {
 				req.getSession().setAttribute("rentcheck", true);
@@ -70,20 +78,26 @@ public class VehicleController {
 			@RequestParam(value = "licenseplate", required = false) String licensePlate, Model model) {
 
 		String message = null;
+		log.info("Executing /deleteVehicle from com.garage.controller.VehicleController");
 		Vehicle vehicle = ctx.getBean(Vehicle.class);
 		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
-		if (licensePlate != null) {
-			vehicle.setLicenseplate(licensePlate);
-			try {
-				message = vehicleOp.deleteVehicleService(vehicle);
-			} catch (VehicleException e) {
-				message = e.getMessage();
-				e.printStackTrace();
-			} finally {
-				model.addAttribute("message", message);
+		if (id != null && id != "") {
+			if (licensePlate != null && licensePlate != "") {
+				vehicle.setIdvehicle(Integer.parseInt(id));
+				vehicle.setLicenseplate(licensePlate);
+				try {
+					log.warn("Trying to delete a vehicle...");
+					message = vehicleOp.deleteVehicleService(vehicle);
+					log.warn("Vehicle ID: " + vehicle.getIdvehicle() + " deleted.");
+				} catch (VehicleException e) {
+					message = e.getMessage();
+					log.error(e);
+				} finally {
+					model.addAttribute("message", message);
+				}
 			}
 		}
-		return "search"; 
+		return "search";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -93,13 +107,18 @@ public class VehicleController {
 			@RequestParam(value = "type", required = false) String type, Model model) {
 
 		String message = null;
+		log.info("Executing /insertVehicle from com.garage.controller.VehicleController");
 		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
 		VehicleinfoServiceImpl typeOp = ctx.getBean(VehicleinfoServiceImpl.class);
 		List<Vehicleinfo> typesList = (List<Vehicleinfo>) ctx.getBean("vehicleinfoList");
 		try {
+			log.warn("Trying to retrieve all Vehicleinfo's records...");
 			typesList = typeOp.allInfoService();
 			if (!typesList.isEmpty()) {
+				log.warn("Records retrieved.");
 				model.addAttribute("list", typesList);
+			} else {
+				log.info("There are no records.");
 			}
 			if (licensePlate != null && licensePlate != "") {
 				if (brand != null && brand != "") {
@@ -112,20 +131,21 @@ public class VehicleController {
 						info.setVehicletype(Integer.parseInt(splitted[1]));
 						info.setDescription(splitted[0]);
 						vehicle.setVehicleinfo(info);
+						log.warn("Trying to insert a new vehicle...");
 						message = vehicleOp.insertVehicleService(vehicle);
+						log.warn("Vehicle inserted.");
 					}
 				}
 			}
 		} catch (VehicleException e) {
 			message = e.getMessage();
-			e.printStackTrace();
+			log.error(e);
 		} catch (VehicleinfoException e) {
 			message = e.getMessage();
-			e.printStackTrace();
+			log.error(e);
 		} finally {
 			model.addAttribute("message", message);
 		}
-		return "insertNewVehicle";   
+		return "insertNewVehicle";
 	}
 }
- 

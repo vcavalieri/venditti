@@ -18,34 +18,25 @@
 <body>
 
 	<form id="formpren" method="GET" action="insertPrenotation">
-		 Date Format : yyyy-MM-dd<br><br>
-		<label for="datepicker1"> Date of Rent Start : <b>${sessionScope.rentstartdate}</b> </label> 
-		<input id="datepicker1" type="hidden" value="${sessionScope.rentstartdate}" name="rentstart"><br> <br> 
-		<label for="datepicker2">Date of Rent End:</label>  
-		<input type="text" id="datepicker2" name="rentend"><br> <br> 
-		
-		Selected Vehicle: ${param.licenseplate} 
-		<input type="hidden" value="${param.idvehicle}" name="idvehicle"> <br><br> 
-		<input id="btnSubmit" type="submit" value="Rent">
-		&emsp; 
-		<a href="${pageContext.request.contextPath}/login?username=${sessionScope.username}&password=${sessionScope.password}&alert=no">SEARCH AGAIN</a> &emsp; 
-		<a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
+		Date Format : yyyy-MM-dd<br> <br> <label for="datepicker1">
+			Date of Rent Start : <b>${sessionScope.rentstartdate}</b>
+		</label> <input id="datepicker1" type="hidden"
+			value="${sessionScope.rentstartdate}" name="rentstart"><br>
+		<br> <label for="datepicker2">Date of Rent End:</label> <input
+			type="text" id="datepicker2" name="rentend"><br> <br>
+
+		Selected Vehicle: ${param.licenseplate} <input type="hidden"
+			value="${param.idvehicle}" name="idvehicle"> <br> <br>
+		<input id="btnSubmit" type="submit" value="Rent"> &emsp; <a
+			href="${pageContext.request.contextPath}/login?username=${sessionScope.username}&password=${sessionScope.password}&alert=no">SEARCH
+			AGAIN</a> &emsp; <a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
 	</form>
 
-	<c:if test="${not empty message}">
-		<c:if test = "${param.alert ne 'no'}">
-		<script>
-			var message = "${message}";
-			alert(message);
-		</script>
-		</c:if>
-	</c:if>
-
 	<script>
-	  $( function() {
-	    $( "#datepicker2" ).datepicker();
-	  } );
+		$(function() {
+			$("#datepicker2").datepicker();
+		});
 	</script>
-  
+
 </body>
 </html>

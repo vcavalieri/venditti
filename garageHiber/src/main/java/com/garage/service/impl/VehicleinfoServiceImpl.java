@@ -13,11 +13,11 @@ public class VehicleinfoServiceImpl implements com.garage.service.VehicleinfoSer
 
 	@Autowired
 	private ApplicationContext ctx;
-	
+
 	@Override
 	public List<Vehicleinfo> allInfoService() throws VehicleinfoException {
-		
+
 		VehicleinfoDAOImpl infoOp = ctx.getBean(VehicleinfoDAOImpl.class);
-		return infoOp.allTypes();	
+		return infoOp.allTypes();
 	}
 }

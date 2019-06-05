@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generated May 24, 2019 10:38:21 AM by Hibernate Tools 5.2.12.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
-    <class catalog="garage2" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.garage.model.Prenotation" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="prenotation">
-        <id name="idprenotation" type="java.lang.Integer">
-            <column name="idprenotation"/>
-            <generator class="identity"/>
-        </id>
-        <many-to-one class="com.garage.model.User" embed-xml="true" fetch="select" insert="true" name="user" not-found="exception" optimistic-lock="true" unique="false" update="true">
-            <column name="fk_iduser" not-null="true"/>
-        </many-to-one>
-        <many-to-one class="com.garage.model.Vehicle" embed-xml="true" fetch="select" insert="true" name="vehicle" not-found="exception" optimistic-lock="true" unique="false" update="true">
-            <column name="fk_idvehicle" not-null="true"/>
-        </many-to-one>
-        <property generated="never" lazy="false" name="rentstart" optimistic-lock="true" type="date" unique="false">
-            <column length="10" name="rentstart"/>
-        </property>
-        <property generated="never" lazy="false" name="rentend" optimistic-lock="true" type="date" unique="false">
-            <column length="10" name="rentend"/>
-        </property>
-    </class>
+<hibernate-mapping auto-import="true"
+	default-access="property" default-cascade="none" default-lazy="true">
+	<class catalog="garage2" dynamic-insert="false"
+		dynamic-update="false" mutable="true"
+		name="com.garage.model.Prenotation" optimistic-lock="version"
+		polymorphism="implicit" select-before-update="false"
+		table="prenotation">
+		<id name="idprenotation" type="java.lang.Integer">
+			<column name="idprenotation" />
+			<generator class="identity" />
+		</id>
+		<many-to-one class="com.garage.model.User"
+			embed-xml="true" fetch="select" insert="true" name="user"
+			not-found="exception" optimistic-lock="true" unique="false"
+			update="true">
+			<column name="fk_iduser" not-null="true" />
+		</many-to-one>
+		<many-to-one class="com.garage.model.Vehicle"
+			embed-xml="true" fetch="select" insert="true" name="vehicle"
+			not-found="exception" optimistic-lock="true" unique="false"
+			update="true">
+			<column name="fk_idvehicle" not-null="true" />
+		</many-to-one>
+		<property generated="never" lazy="false" name="rentstart"
+			optimistic-lock="true" type="date" unique="false">
+			<column length="10" name="rentstart" />
+		</property>
+		<property generated="never" lazy="false" name="rentend"
+			optimistic-lock="true" type="date" unique="false">
+			<column length="10" name="rentend" />
+		</property>
+	</class>
 </hibernate-mapping>

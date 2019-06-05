@@ -3,6 +3,8 @@ package com.garage.dao.impl;
 import java.sql.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -19,9 +21,11 @@ import com.garage.model.Vehicle;
 
 public class PrenotationDAOImpl implements PrenotationDAO {
 
+	private static final Log log = LogFactory.getLog(PrenotationDAOImpl.class);
+
 	@Autowired
 	private ApplicationContext ctx;
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean deletePrenotation(Prenotation pren) throws PrenotationException {
@@ -34,14 +38,14 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 				pren = null;
 				pren = prens;
 			}
+			log.warn("deleting...");
 			status = txMan.delete(pren);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new PrenotationException(e);
 		}
 		return status;
 	}
-  
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean insertPrenotation(User user, Vehicle vehicle, Date rentStart, Date rentEnd)
@@ -55,6 +59,7 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		pren.setRentend(rentEnd);
 		try {
 			TransactionManager<Prenotation> txMan = (TransactionManager<Prenotation>) ctx.getBean("txManPren");
+			log.warn("inserting...");
 			status = txMan.insert(pren);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,16 +76,19 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		Session session = null;
 		Transaction tx = null;
 		try {
-			session = SingletonHiberUtil.getSession();
+			session = ctx.getBean(SingletonHiberUtil.class).getSession();
 			tx = session.beginTransaction();
+			log.warn("Transaction started");
 			Query<Prenotation> query = session.getNamedQuery("myVehiclePrenotationProcedure").setParameter("idutente",
 					user.getIduser());
 			prenList = query.list();
+			log.info("Called StoredProcedure: myVehiclePrenotationProcedure");
 			tx.commit();
+			log.warn("Transaction committed");
 		} catch (Exception e) {
 			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
+				log.error("Transaction rollbacked");
+			tx.rollback();
 			throw new PrenotationException(e);
 		}
 		return prenList;
@@ -89,21 +97,24 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Prenotation> prenSpecificVehicle(Vehicle vehicle) throws PrenotationException {
-		
+
 		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
 		Session session = null;
 		Transaction tx = null;
 		try {
-			session = SingletonHiberUtil.getSession();
+			session = ctx.getBean(SingletonHiberUtil.class).getSession();
 			tx = session.beginTransaction();
+			log.warn("Transaction started");
 			Query<Prenotation> query = session.getNamedQuery("prenSpecificVehicleProcedure").setParameter("specificID",
 					vehicle.getIdvehicle());
 			prenList = query.list();
+			log.info("Called StoredProcedure: prenSpecificVehicleProcedure");
 			tx.commit();
+			log.warn("Transaction committed");
 		} catch (Exception e) {
 			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
+				log.error("Transaction rollbacked");
+			tx.rollback();
 			throw new PrenotationException(e);
 		}
 		return prenList;
@@ -117,18 +128,21 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		Session session = null;
 		Transaction tx = null;
 		try {
-			session = SingletonHiberUtil.getSession();
+			session = ctx.getBean(SingletonHiberUtil.class).getSession();
 			tx = session.beginTransaction();
+			log.warn("Transaction started");
 			Query<Prenotation> query = session.getNamedQuery("availablePrenotationProcedure").setParameter("paramDate",
 					date);
 			prenList = query.list();
+			log.info("Called StoredProcedure: availablePrenotationProcedure");
 			tx.commit();
+			log.warn("Transaction committed");
 		} catch (Exception e) {
 			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
+				log.error("Transaction rollbacked");
+			tx.rollback();
 			throw new PrenotationException(e);
 		}
 		return prenList;
 	}
-} 
+}

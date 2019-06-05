@@ -22,24 +22,13 @@ import org.hibernate.annotations.NamedNativeQuery;
  */
 
 @NamedNativeQueries({
-	
-	@NamedNativeQuery(
-			name = "availablePrenotationProcedure",
-			query = "CALL availablePrenotation(:paramDate)",
-			resultClass = Prenotation.class
-			),
-	@NamedNativeQuery(
-			name = "prenSpecificVehicleProcedure",
-			query = "CALL prenSpecificVehicle(:specificID)",
-			resultClass = Prenotation.class
-			),
-	@NamedNativeQuery(
-			name = "myVehiclePrenotationProcedure",
-			query = "CALL myVehicleProcedure(:idutente)",
-			resultClass = Prenotation.class
-			),
-		}) 
- 
+
+		@NamedNativeQuery(name = "availablePrenotationProcedure", query = "CALL availablePrenotation(:paramDate)", resultClass = Prenotation.class),
+		@NamedNativeQuery(name = "prenSpecificVehicleProcedure", query = "CALL prenSpecificVehicle(:specificID)", resultClass = Prenotation.class),
+		@NamedNativeQuery(name = "myVehiclePrenotationProcedure", query = "CALL myVehicleProcedure(:idutente)", resultClass = Prenotation.class),
+
+})
+
 @Entity
 @Table(name = "prenotation", catalog = "garage2")
 public class Prenotation implements java.io.Serializable {
@@ -47,8 +36,8 @@ public class Prenotation implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;  
-	
+	private static final long serialVersionUID = 1L;
+
 	private Integer idprenotation;
 	private User user;
 	private Vehicle vehicle;
@@ -105,7 +94,7 @@ public class Prenotation implements java.io.Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "rentstart", length = 10, nullable = true)
 	public Date getRentstart() {
-		return this.rentstart;   
+		return this.rentstart;
 	}
 
 	public void setRentstart(Date rentstart) {
@@ -123,7 +112,7 @@ public class Prenotation implements java.io.Serializable {
 	}
 
 	@Override
-	public String toString() {  
+	public String toString() {
 		return "Prenotation [idprenotation=" + idprenotation + ", user=" + user + ", vehicle=" + vehicle
 				+ ", rentstart=" + rentstart + ", rentend=" + rentend + "]";
 	}

@@ -15,7 +15,7 @@ public class VehicleServiceImpl implements VehicleService {
 
 	@Autowired
 	private ApplicationContext ctx;
-	
+
 	@Override
 	public String insertVehicleService(Vehicle vehicle) throws VehicleException {
 
@@ -50,4 +50,4 @@ public class VehicleServiceImpl implements VehicleService {
 		VehicleDAOImpl vehicleOp = ctx.getBean(VehicleDAOImpl.class);
 		return vehicleOp.searchVehicle(filter);
 	}
-} 
+}

@@ -1,5 +1,7 @@
-STORED PROCEDURES
+								
+								STORED PROCEDURES
 
+-----------------------------------------------------------------------
 CREATE DEFINER=`root`@`localhost` PROCEDURE `availablePrenotation`(
 	paramDate date
 )
@@ -12,6 +14,8 @@ BEGIN
     group by idprenotation;
 END
 
+-----------------------------------------------------------------------
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `myVehicleProcedure`(
 	idutente int
 )
@@ -23,6 +27,8 @@ BEGIN
     WHERE iduser = idutente
     GROUP BY idprenotation;
 END
+
+-----------------------------------------------------------------------
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `prenSpecificVehicle`(
 	specificID int

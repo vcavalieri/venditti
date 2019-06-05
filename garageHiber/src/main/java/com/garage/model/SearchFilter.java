@@ -10,6 +10,12 @@ public class SearchFilter {
 
 	}
 
+	public SearchFilter(int idVehicle, String licensePlate, String brand) {
+		this.idVehicle = idVehicle;
+		this.licensePlate = licensePlate;
+		this.brand = brand;
+	}
+
 	public int getIdVehicle() {
 		return idVehicle;
 	}

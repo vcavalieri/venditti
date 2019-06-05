@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Home object for domain model class User.
+ * 
  * @see com.garage.model.User
  * @author Hibernate Tools
  */

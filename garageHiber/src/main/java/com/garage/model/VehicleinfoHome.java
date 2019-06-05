@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Home object for domain model class Vehicleinfo.
+ * 
  * @see com.garage.model.Vehicleinfo
  * @author Hibernate Tools
  */

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -11,15 +12,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.garage.exception.UserException;
+import com.garage.exception.UserException; 
 import com.garage.model.User;
 import com.garage.service.impl.UserServiceImpl;
+import com.garage.utils.Log4jManager;
 
 @Controller
 public class UserController {
 
 	private static final Log log = LogFactory.getLog(UserController.class);
-
+	
 	@Autowired
 	private ApplicationContext ctx;
 
@@ -29,37 +31,37 @@ public class UserController {
 			@RequestParam(value = "lastname", required = false) String last,
 			@RequestParam(value = "password", required = false) String password, Model model) throws UserException {
 
+		long start = System.currentTimeMillis();
 		String message = null;
 		log.info("Executing /register from com.garage.controller.UserController");
 		String redirect = "registerUser";
 		UserServiceImpl userOp = ctx.getBean(UserServiceImpl.class);
-		try {
-			if (username != null && username != "") {
-				if (password != null && password != "") {
-					if (first != null && first != "") {
-						if (last != null && last != "") {
+		if (username != null && username != "") {
+			if (password != null && password != "") {
+				if (first != null && first != "") {
+					if (last != null && last != "") {
+						try {
 							User user = ctx.getBean(User.class);
 							user.setFirstname(first);
 							user.setLastname(last);
 							user.setPassword(password);
 							user.setUsername(username);
-							log.warn("Trying to register a new user...");
 							message = userOp.registerService(user);
-							log.warn("New user registered.");
+						} catch (UserException e) {
+							message = e.getMessage();
+							log.error(e);
 						}
 					}
 				}
 			}
-			if (message != null) {
-				model.addAttribute("message", message);
-				if (message.equals("Registration Succesfully Done!")) {
-					redirect = "index";
-				}
-			}
-		} catch (UserException e) {
-			message = e.getMessage();
-			log.error(e);
 		}
+		if (message != null) {
+			model.addAttribute("message", message);
+			if (message.equals("Registration Succesfully Done!")) {
+				redirect = "index";
+			}
+		}
+		Log4jManager.log(Level.INFO ,"New user registered after " + (System.currentTimeMillis() - start) + " millis");
 		return redirect;
 	}
 
@@ -67,6 +69,7 @@ public class UserController {
 	public String loginUser(@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "password", required = false) String password, Model model, HttpServletRequest req) {
 
+		long start = System.currentTimeMillis();
 		String[] loginData = { null, null };
 		log.info("Executing /login from com.garage.controller.UserController");
 		String redirect = "index";
@@ -75,9 +78,8 @@ public class UserController {
 			User user = ctx.getBean(User.class);
 			user.setPassword(password);
 			user.setUsername(username);
-			log.warn("Trying to login...");
 			loginData = userOp.loginService(user);
-			log.warn("Login done.");
+
 			if (loginData[0] != null) {
 				if (loginData[0].equals("Login Succesfully Done!")) {
 					redirect = "search";
@@ -98,17 +100,18 @@ public class UserController {
 				log.info("done.");
 			}
 		}
+		Log4jManager.log(Level.INFO , "Login done after " + (System.currentTimeMillis() - start) + " millis");
 		return redirect;
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutUser(Model model, HttpServletRequest req) {
 
+		long start = System.currentTimeMillis();
 		log.info("Executing /logout from com.garage.controller.UserController");
-		log.warn("Invalidating session...");
 		req.getSession().invalidate();
-		log.warn("done.");
 		model.addAttribute("message", "Logout Succesfully Done!");
+		Log4jManager.log(Level.INFO , "Session invalidated after " + (System.currentTimeMillis() - start) + " millis");
 		return "index";
 	}
-}
+} 

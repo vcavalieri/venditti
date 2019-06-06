@@ -1,12 +1,13 @@
 package com.garage.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-
-import com.garage.dao.impl.VehicleDAOImpl;
-import com.garage.exception.VehicleException;
+ 
+import com.garage.dao.impl.VehicleDAOImpl; 
+import com.garage.exception.VehicleException; 
 import com.garage.model.SearchFilter;
 import com.garage.model.Vehicle;
 import com.garage.service.VehicleService;
@@ -49,5 +50,11 @@ public class VehicleServiceImpl implements VehicleService {
 
 		VehicleDAOImpl vehicleOp = ctx.getBean(VehicleDAOImpl.class);
 		return vehicleOp.searchVehicle(filter);
+	}
+	
+	@Override
+	public List<Vehicle> availableVehicleService(Date startDate, Date endDate) throws VehicleException {
+		VehicleDAOImpl vehicleOp = ctx.getBean(VehicleDAOImpl.class);
+		return vehicleOp.availableVehicles(startDate,endDate);
 	}
 }

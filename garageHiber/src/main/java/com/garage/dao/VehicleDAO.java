@@ -1,8 +1,9 @@
 package com.garage.dao;
 
+import java.sql.Date;
 import java.util.List;
-
-import com.garage.exception.VehicleException;
+ 
+import com.garage.exception.VehicleException; 
 import com.garage.model.SearchFilter;
 import com.garage.model.Vehicle;
 
@@ -13,5 +14,7 @@ public interface VehicleDAO {
 	public boolean insertVehicle(Vehicle vehicle) throws VehicleException;
 
 	public List<Vehicle> searchVehicle(SearchFilter filter) throws VehicleException;
+	
+	public List<Vehicle> availableVehicles(Date startDate, Date endDate) throws VehicleException;
 
 }

@@ -33,8 +33,10 @@
 
 	<form id="searchpren" method="GET" action="available">
 		<label for="rentend"> Your Rent Will Starts On: </label> <br>
-		<input type="text" name="rentend" id="rentend"><br> <br>
-		<input type="submit" value="Search for Prenotations" /> &emsp;
+		<input type="text" name="rentstart" id="rentstart"><br> <br>
+		<label for="rentstart">Your Rent Will End On: </label> <br>
+		<input type ="text" name="rentend" id ="rentend"><br><br>
+		<input type="submit" value="Rent a Vehicle" /> &emsp;
 	</form>
 	<br>
 	<br>
@@ -45,6 +47,10 @@
 	<script>
 		$(function() {
 			$("#rentend").datepicker();
+		});
+		
+		$(function() {
+			$("#rentstart").datepicker();
 		});
 	</script>
 </body>

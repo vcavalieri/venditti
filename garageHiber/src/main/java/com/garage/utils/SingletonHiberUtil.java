@@ -1,4 +1,4 @@
-package com.garage.model;
+package com.garage.utils;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,7 +15,7 @@ public class SingletonHiberUtil {
 
 	}
 
-	public Session getSession() {
+	public static Session getSession() {
 		SessionFactory sFactory = getSessionFactory();
 		if (session == null) {
 			session = sFactory.openSession();
@@ -56,5 +56,13 @@ public class SingletonHiberUtil {
 			}
 		}
 		return sessionFactory;
+	}
+	
+	public static void shutDown() {
+		
+		if(session!=null) {
+			session.close();
+		}
+		
 	}
 }

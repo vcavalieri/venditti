@@ -15,9 +15,9 @@ import com.garage.dao.PrenotationDAO;
 import com.garage.dao.TransactionManager;
 import com.garage.exception.PrenotationException;
 import com.garage.model.Prenotation;
-import com.garage.model.SingletonHiberUtil;
 import com.garage.model.User;
 import com.garage.model.Vehicle;
+import com.garage.utils.SingletonHiberUtil;
 
 public class PrenotationDAOImpl implements PrenotationDAO {
 
@@ -68,7 +68,7 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		return status;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
 	public List<Prenotation> myVehiclePrenotations(User user) throws PrenotationException {
 
@@ -87,59 +87,6 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 			log.warn("Transaction committed");
 		} catch (Exception e) {
 			if (tx != null)
-				log.error("Transaction rollbacked");
-			tx.rollback();
-			throw new PrenotationException(e);
-		}
-		return prenList;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Prenotation> prenSpecificVehicle(Vehicle vehicle) throws PrenotationException {
-
-		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
-		Session session = null;
-		Transaction tx = null;
-		try {
-			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
-			Query<Prenotation> query = session.getNamedQuery("prenSpecificVehicleProcedure").setParameter("specificID",
-					vehicle.getIdvehicle());
-			prenList = query.list();
-			log.info("Called StoredProcedure: prenSpecificVehicleProcedure");
-			tx.commit();
-			log.warn("Transaction committed");
-		} catch (Exception e) {
-			if (tx != null)
-				log.error("Transaction rollbacked");
-			tx.rollback();
-			throw new PrenotationException(e);
-		}
-		return prenList;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Prenotation> availablePrenotation(Date date) throws PrenotationException {
-
-		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
-		Session session = null;
-		Transaction tx = null;
-		try {
-			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
-			Query<Prenotation> query = session.getNamedQuery("availablePrenotationProcedure").setParameter("paramDate",
-					date);
-			prenList = query.list();
-			log.info("Called StoredProcedure: availablePrenotationProcedure");
-			tx.commit();
-			log.warn("Transaction committed");
-		} catch (Exception e) {
-			if (tx != null)
-				log.error("Transaction rollbacked");
 			tx.rollback();
 			throw new PrenotationException(e);
 		}

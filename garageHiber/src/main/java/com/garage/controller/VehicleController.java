@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -14,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.garage.exception.PrenotationException;
 import com.garage.exception.VehicleException;
 import com.garage.exception.VehicleinfoException;
 import com.garage.model.SearchFilter;
 import com.garage.model.Vehicle;
-import com.garage.model.Vehicleinfo;
+import com.garage.model.Vehicleinfo; 
 import com.garage.service.impl.VehicleServiceImpl;
 import com.garage.service.impl.VehicleinfoServiceImpl;
+import com.garage.utils.Log4jManager;
+import com.garage.utils.Utility;
 
 @Controller
 public class VehicleController {
@@ -30,7 +34,7 @@ public class VehicleController {
 	@Autowired
 	private ApplicationContext ctx;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping(value = "/showVehicle", method = RequestMethod.GET)
 	public String showVehicle(@RequestParam(value = "idvehicle", required = false) String id,
 			@RequestParam(value = "licenseplate", required = false) String licensePlate,
@@ -38,7 +42,7 @@ public class VehicleController {
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "rentend", required = false) String rentEnd, Model model, HttpServletRequest req) {
 
-		@SuppressWarnings("unused")
+		long start = System.currentTimeMillis();
 		String message = null;
 		log.info("Executing /showVehicle from com.garage.controller.VehicleController");
 		List<Vehicle> list = (List<Vehicle>) ctx.getBean("vehicleList");
@@ -52,24 +56,17 @@ public class VehicleController {
 			}
 			filter.setLicensePlate(licensePlate);
 			filter.setBrand(brand);
-			log.warn("Trying to search vehicles...");
 			list = vehicleOp.searchVehicleService(filter);
 			if (!list.isEmpty()) {
-				log.warn("Vehicles found.");
 				model.addAttribute("vehicles", list);
 			} else {
-				log.warn("Vehicles not found.");
 				message = "There are no Results!";
 			}
 		} catch (VehicleException e) {
 			message = e.getMessage();
 			log.error(e);
-		} finally {
-			if (rentEnd != null && rentEnd != "") {
-				req.getSession().setAttribute("rentcheck", true);
-				req.getSession().setAttribute("rentstart", rentEnd);
-			}
 		}
+		Log4jManager.log(Level.INFO , "Vehicles found after " + (System.currentTimeMillis() - start) + " millis");
 		return "showVehicle";
 	}
 
@@ -77,6 +74,7 @@ public class VehicleController {
 	public String deleteVehicle(@RequestParam(value = "idvehicle", required = false) String id,
 			@RequestParam(value = "licenseplate", required = false) String licensePlate, Model model) {
 
+		long start = System.currentTimeMillis();
 		String message = null;
 		log.info("Executing /deleteVehicle from com.garage.controller.VehicleController");
 		Vehicle vehicle = ctx.getBean(Vehicle.class);
@@ -86,9 +84,7 @@ public class VehicleController {
 				vehicle.setIdvehicle(Integer.parseInt(id));
 				vehicle.setLicenseplate(licensePlate);
 				try {
-					log.warn("Trying to delete a vehicle...");
 					message = vehicleOp.deleteVehicleService(vehicle);
-					log.warn("Vehicle ID: " + vehicle.getIdvehicle() + " deleted.");
 				} catch (VehicleException e) {
 					message = e.getMessage();
 					log.error(e);
@@ -97,6 +93,8 @@ public class VehicleController {
 				}
 			}
 		}
+		Log4jManager.log(Level.INFO , "Vehicle ID: " + vehicle.getIdvehicle() + " deleted after " + (System.currentTimeMillis() - start)
+				+ " millis");
 		return "search";
 	}
 
@@ -106,19 +104,16 @@ public class VehicleController {
 			@RequestParam(value = "brand", required = false) String brand,
 			@RequestParam(value = "type", required = false) String type, Model model) {
 
+		long start = System.currentTimeMillis();
 		String message = null;
 		log.info("Executing /insertVehicle from com.garage.controller.VehicleController");
 		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
 		VehicleinfoServiceImpl typeOp = ctx.getBean(VehicleinfoServiceImpl.class);
 		List<Vehicleinfo> typesList = (List<Vehicleinfo>) ctx.getBean("vehicleinfoList");
 		try {
-			log.warn("Trying to retrieve all Vehicleinfo's records...");
 			typesList = typeOp.allInfoService();
 			if (!typesList.isEmpty()) {
-				log.warn("Records retrieved.");
 				model.addAttribute("list", typesList);
-			} else {
-				log.info("There are no records.");
 			}
 			if (licensePlate != null && licensePlate != "") {
 				if (brand != null && brand != "") {
@@ -131,9 +126,7 @@ public class VehicleController {
 						info.setVehicletype(Integer.parseInt(splitted[1]));
 						info.setDescription(splitted[0]);
 						vehicle.setVehicleinfo(info);
-						log.warn("Trying to insert a new vehicle...");
 						message = vehicleOp.insertVehicleService(vehicle);
-						log.warn("Vehicle inserted.");
 					}
 				}
 			}
@@ -146,6 +139,43 @@ public class VehicleController {
 		} finally {
 			model.addAttribute("message", message);
 		}
+		Log4jManager.log(Level.INFO , "Vehicle inserted after " + (System.currentTimeMillis() - start) + " millis");
 		return "insertNewVehicle";
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/available", method = RequestMethod.GET)
+	public String availablePrenotations(@RequestParam(value = "rentstart", required = false) String rentStart,
+			@RequestParam(value = "rentend", required = false) String rentEnd, Model model, HttpServletRequest req) {
+	
+		long start = System.currentTimeMillis();
+		String message = null;
+		log.info("Executing /available from com.garage.controller.VehicleController");
+		java.sql.Date rentStartDate = null;
+		java.sql.Date rentEndDate = null;
+		List<Vehicle> vehicleList = (List<Vehicle>) ctx.getBean("vehicleList");
+		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
+		if (rentEnd != null && rentEnd != "") {
+			try {
+				rentStartDate = ctx.getBean(Utility.class).parseDataToSql(rentStart);
+				rentEndDate = ctx.getBean(Utility.class).parseDataToSql(rentEnd);
+			} catch (PrenotationException e) {
+				message = e.getMessage();
+				model.addAttribute("message", message);
+				log.error(e);
+			}
+			try {
+				vehicleList = vehicleOp.availableVehicleService(rentStartDate, rentEndDate);
+			} catch (VehicleException e) {
+				message = e.getMessage();
+				log.error(e);
+			} finally {
+				model.addAttribute("vehicles", vehicleList);
+				req.getSession().setAttribute("rentstartdate", rentStartDate);
+				req.getSession().setAttribute("rentenddate", rentEndDate);
+			}
+		}
+		Log4jManager.log(Level.INFO , "AvailableVehicles retrieved after " + (System.currentTimeMillis() - start) + " millis");
+		return "availableVehicles";
 	}
 }

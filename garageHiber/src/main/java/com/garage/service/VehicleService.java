@@ -1,8 +1,9 @@
 package com.garage.service;
 
+import java.sql.Date;
 import java.util.List;
-
-import com.garage.exception.VehicleException;
+ 
+import com.garage.exception.VehicleException; 
 import com.garage.model.SearchFilter;
 import com.garage.model.Vehicle;
 
@@ -13,5 +14,7 @@ public interface VehicleService {
 	public String deleteVehicleService(Vehicle vehicle) throws VehicleException;
 
 	public List<Vehicle> searchVehicleService(SearchFilter filter) throws VehicleException;
+	
+	public List<Vehicle> availableVehicleService(Date startDate, Date endDate) throws VehicleException;
 
 }

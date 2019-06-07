@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@	taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page session="true"%>
 
 <!DOCTYPE html SYSTEM "about:legacy-compat">
@@ -12,7 +13,7 @@ table, th, td {
 	border: 1px solid black;
 }
 </style>
-<title>Search Results</title>
+<title><spring:message code="title.show" /></title>
 </head>
 
 <body>
@@ -21,14 +22,13 @@ table, th, td {
 		<table>
 			<thead>
 				<tr>
-					<td><b>&nbsp;Id Vehicle&nbsp;</b></td>
-					<td><b>&nbsp;LicensePlate&nbsp;</b></td>
-					<td><b>&nbsp;Brand&nbsp;</b></td>
-					<td><b>&nbsp;Description&nbsp;</b></td>
+					<td><b>&nbsp;<spring:message code="td.show.idvehicle" />&nbsp;</b></td>
+					<td><b>&nbsp;<spring:message code="td.show.licenseplate" />&nbsp;</b></td>
+					<td><b>&nbsp;<spring:message code="td.show.brand" />&nbsp;</b></td>
+					<td><b>&nbsp;<spring:message code="td.show.description" />&nbsp;</b></td>
 					<c:if test="${sessionScope.username == 'admin'}">
 						<td><a
-							href="${pageContext.request.contextPath}/insertVehicle?alert=no">INSERT
-								NEW VEHICLE</a></td>
+							href="${pageContext.request.contextPath}/insertVehicle?alert=no"><spring:message code="link.show.insert" /></a></td>
 					</c:if>
 				</tr>
 			</thead>
@@ -41,8 +41,7 @@ table, th, td {
 						<td>&nbsp;${itemlist.vehicleinfo.description}&nbsp;</td>
 						<c:if test="${sessionScope.username == 'admin'}">
 							<td><a
-								href="${pageContext.request.contextPath}/deleteVehicle?idvehicle=${itemlist.idvehicle}&licenseplate=${itemlist.licenseplate}">DELETE
-									VEHICLE</a></td>
+								href="${pageContext.request.contextPath}/deleteVehicle?idvehicle=${itemlist.idvehicle}&licenseplate=${itemlist.licenseplate}"><spring:message code="link.show.delete" /></a></td>
 						</c:if>
 					</tr>
 				</c:forEach>
@@ -52,9 +51,8 @@ table, th, td {
 	<br>
 	<br>
 	<a
-		href="${pageContext.request.contextPath}/login?username=${sessionScope.username}&password=${sessionScope.password}&alert=no">SEARCH
-		AGAIN</a> &emsp;
-	<a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
+		href="${pageContext.request.contextPath}/login?username=${sessionScope.username}&password=${sessionScope.password}&alert=no"><spring:message code="link.search" /></a> &emsp;
+	<a href="${pageContext.request.contextPath}/logout"><spring:message code="link.logout" /></a>
 
 </body>
 </html>

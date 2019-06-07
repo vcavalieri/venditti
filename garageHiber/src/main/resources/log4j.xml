@@ -3,97 +3,56 @@
 <log4j:configuration debug="true"
 	xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
-		<appender name="console"
-			class="org.apache.log4j.ConsoleAppender">
-			<param name="Target" value="System.out" />
-			<layout class="org.apache.log4j.PatternLayout">
-				<param name="ConversionPattern"
-					value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-			</layout>
-		</appender>
+	<appender name="console"
+		class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
 
-		<appender name="fileAppender"
-			class="org.apache.log4j.RollingFileAppender">
-			<param name="File" value="C:\\logs\\demoApplication.log" />
-			<layout class="org.apache.log4j.PatternLayout">
-				<param name="ConversionPattern"
-					value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-			</layout>
-		</appender>
+	<appender name="fileAppender"
+		class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="C:\\logs\\demoApplication.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
 
-		<appender name="fileAppenderGarage"
-			class="org.apache.log4j.RollingFileAppender">
-			<param name="File" value="C:\\logs\\garageApplication.log" />
-			<layout class="org.apache.log4j.PatternLayout">
-				<param name="ConversionPattern"
-					value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-			</layout>
-		</appender>
-		
-		<appender name="millisfile"
-			class="org.apache.log4j.RollingFileAppender">
-			<param name="File" value="C:\\logs\\millisApplication.log" />
-			<layout class="org.apache.log4j.PatternLayout">
-				<param name="ConversionPattern"
-					value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-			</layout>
-		</appender>
+	<appender name="fileAppenderGarage"
+		class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="C:\\logs\\garageApplication.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
 
-	<logger name="com.garage.utils.Log4jManager">
-		<level value="info"></level>
-		<appender-ref ref="millisfile"></appender-ref>
-	</logger>
-
+	<appender name="millisfile"
+		class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="C:\\logs\\millisApplication.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
 
 	<logger name="com.garage">
-		<level value="warn" />
+		<level value="debug" />
 		<appender-ref ref="fileAppenderGarage" />
 	</logger>
 
-	<root>
-		<priority value="debug"></priority>
+	<logger	name="com.garage.utils.PerfInterceptor" additivity="false">
+		<level value="info" />
 		<appender-ref ref="console" />
-		<appender-ref ref="fileAppender" />
+		<appender-ref ref="millisfile" />
+	</logger>
+
+	<root> 
+		<priority value="info"></priority>
+		<appender-ref ref="console" />
+		<appender-ref ref="fileAppender"/>
 	</root>
-
-
 </log4j:configuration>
-
-
-
-<!-- ?xml version="1.0" encoding="UTF-8"?>
-
-<Configuration>
-
-	<CustomLevels>
-		<CustomLevel name="MILLIS" intLevel="400001" />
-	</CustomLevels>
-
-	<Appenders>
-		<Console name="console" target="SYSTEM_OUT">
-			<PatternLayout
-				pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-		</Console>
-		<File name="fileAppender"
-			fileName="C:\\logs\\demoApplication.log" append="false">
-			<PatternLayout
-				pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-		</File>
-		<File name="fileAppenderGarage"
-			fileName="C:\\logs\\garageApplication.log" append="false">
-			<PatternLayout
-				pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
-		</File>
-	</Appenders>
-	<Loggers>
-		<Logger name="com.garage" level="MILLIS">
-			<AppenderRef ref="fileAppenderGarage" />
-		</Logger>
-		<Root level="debug">
-			<AppenderRef ref="console" />
-			<AppenderRef ref="fileAppender" />
-		</Root>
-	</Loggers>
-
-
-</Configuration> -->

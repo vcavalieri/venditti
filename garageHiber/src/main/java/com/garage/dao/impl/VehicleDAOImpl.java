@@ -2,9 +2,7 @@ package com.garage.dao.impl;
 
 import java.sql.Date;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+ 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -20,24 +18,21 @@ import com.garage.model.SearchFilter;
 import com.garage.model.Vehicle;
 import com.garage.utils.SingletonHiberUtil;
 
-public class VehicleDAOImpl implements VehicleDAO {
-
-	private static final Log log = LogFactory.getLog(VehicleDAOImpl.class);
+public class VehicleDAOImpl implements VehicleDAO { 
 
 	@Autowired
 	private ApplicationContext ctx;
 
 	@SuppressWarnings({ "unchecked", "deprecation", "static-access" })
 	@Override
-	public List<Vehicle> searchVehicle(SearchFilter filter) throws VehicleException {
+	public List<Vehicle> searchVehicleDAO(SearchFilter filter) throws VehicleException {
 
 		List<Vehicle> toReturn = (List<Vehicle>) ctx.getBean("vehicleList");
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
+			tx = session.beginTransaction(); 
 			Criteria criteria = session.createCriteria(Vehicle.class);
 			if (filter.getIdVehicle() != 0) {
 				criteria.add(Restrictions.eq("idvehicle", filter.getIdVehicle()));
@@ -49,8 +44,7 @@ public class VehicleDAOImpl implements VehicleDAO {
 				criteria.add(Restrictions.eq("brand", filter.getBrand()));
 			}
 			toReturn = criteria.list();
-			tx.commit();
-			log.warn("Transaction committed");
+			tx.commit(); 
 		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();
@@ -62,7 +56,7 @@ public class VehicleDAOImpl implements VehicleDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean deleteVehicle(Vehicle vehicle) throws VehicleException {
+	public boolean deleteVehicleDAO(Vehicle vehicle) throws VehicleException {
 
 		boolean status = false;
 		List<Vehicle> vehicleList = (List<Vehicle>) ctx.getBean("vehicleList");
@@ -82,7 +76,7 @@ public class VehicleDAOImpl implements VehicleDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean insertVehicle(Vehicle vehicle) throws VehicleException {
+	public boolean insertVehicleDAO(Vehicle vehicle) throws VehicleException {
 
 		boolean status = false;
 		try {
@@ -96,21 +90,18 @@ public class VehicleDAOImpl implements VehicleDAO {
 	
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
-	public List<Vehicle> availableVehicles(Date startDate, Date endDate) throws VehicleException {
+	public List<Vehicle> availableVehiclesDAO(Date startDate, Date endDate) throws VehicleException {
 
 		List<Vehicle> vehicleList = (List<Vehicle>) ctx.getBean("vehicleList");
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
+			tx = session.beginTransaction(); 
 			Query<Vehicle> query = session.getNamedQuery("availableVehiclesProcedure").setParameter("paramDateStart",
 					startDate).setParameter("paramDateEnd", endDate); 
-			vehicleList = query.list();
-			log.info("Called StoredProcedure: availableVehiclesProcedure");
-			tx.commit();
-			log.warn("Transaction committed");
+			vehicleList = query.list(); 
+			tx.commit(); 
 		} catch (Exception e) {
 			if (tx != null)
 			tx.rollback();

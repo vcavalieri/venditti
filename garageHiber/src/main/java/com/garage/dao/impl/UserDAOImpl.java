@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean registerUser(User user) throws UserException {
+	public boolean registerUserDAO(User user) throws UserException {
 
 		boolean status = false;
 		try {
@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String[] loginUser(User user) throws UserException {
+	public String[] loginUserDAO(User user) throws UserException {
 
 		Boolean status = false;
 		String[] loginData = { null, null };
@@ -53,8 +53,7 @@ public class UserDAOImpl implements UserDAO {
 					log.info("Login credentials match!");
 				}
 				loginData[0] = status.toString();
-				loginData[1] = Integer.toString(userQ.getIduser());
-				log.info("login datas setted");
+				loginData[1] = Integer.toString(userQ.getIduser()); 
 			}
 		} catch (Exception e) {
 			throw new UserException(e);

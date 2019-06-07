@@ -5,8 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Level;
+import org.apache.commons.logging.LogFactory; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -22,8 +21,7 @@ import com.garage.model.SearchFilter;
 import com.garage.model.Vehicle;
 import com.garage.model.Vehicleinfo; 
 import com.garage.service.impl.VehicleServiceImpl;
-import com.garage.service.impl.VehicleinfoServiceImpl;
-import com.garage.utils.Log4jManager;
+import com.garage.service.impl.VehicleinfoServiceImpl; 
 import com.garage.utils.Utility;
 
 @Controller
@@ -36,13 +34,12 @@ public class VehicleController {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping(value = "/showVehicle", method = RequestMethod.GET)
-	public String showVehicle(@RequestParam(value = "idvehicle", required = false) String id,
+	public String showVehicleController(@RequestParam(value = "idvehicle", required = false) String id,
 			@RequestParam(value = "licenseplate", required = false) String licensePlate,
 			@RequestParam(value = "brand", required = false) String brand,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "rentend", required = false) String rentEnd, Model model, HttpServletRequest req) {
 
-		long start = System.currentTimeMillis();
 		String message = null;
 		log.info("Executing /showVehicle from com.garage.controller.VehicleController");
 		List<Vehicle> list = (List<Vehicle>) ctx.getBean("vehicleList");
@@ -66,15 +63,13 @@ public class VehicleController {
 			message = e.getMessage();
 			log.error(e);
 		}
-		Log4jManager.log(Level.INFO , "Vehicles found after " + (System.currentTimeMillis() - start) + " millis");
 		return "showVehicle";
 	}
 
 	@RequestMapping(value = "/deleteVehicle", method = RequestMethod.GET)
-	public String deleteVehicle(@RequestParam(value = "idvehicle", required = false) String id,
+	public String deleteVehicleController(@RequestParam(value = "idvehicle", required = false) String id,
 			@RequestParam(value = "licenseplate", required = false) String licensePlate, Model model) {
 
-		long start = System.currentTimeMillis();
 		String message = null;
 		log.info("Executing /deleteVehicle from com.garage.controller.VehicleController");
 		Vehicle vehicle = ctx.getBean(Vehicle.class);
@@ -93,25 +88,22 @@ public class VehicleController {
 				}
 			}
 		}
-		Log4jManager.log(Level.INFO , "Vehicle ID: " + vehicle.getIdvehicle() + " deleted after " + (System.currentTimeMillis() - start)
-				+ " millis");
 		return "search";
 	}
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/insertVehicle", method = RequestMethod.GET)
-	public String insertVehicle(@RequestParam(value = "licenseplate", required = false) String licensePlate,
+	public String insertVehicleController(@RequestParam(value = "licenseplate", required = false) String licensePlate,
 			@RequestParam(value = "brand", required = false) String brand,
 			@RequestParam(value = "type", required = false) String type, Model model) {
 
-		long start = System.currentTimeMillis();
 		String message = null;
 		log.info("Executing /insertVehicle from com.garage.controller.VehicleController");
 		VehicleServiceImpl vehicleOp = ctx.getBean(VehicleServiceImpl.class);
 		VehicleinfoServiceImpl typeOp = ctx.getBean(VehicleinfoServiceImpl.class);
 		List<Vehicleinfo> typesList = (List<Vehicleinfo>) ctx.getBean("vehicleinfoList");
 		try {
-			typesList = typeOp.allInfoService();
+			typesList = typeOp.allTypesService();
 			if (!typesList.isEmpty()) {
 				model.addAttribute("list", typesList);
 			}
@@ -139,16 +131,14 @@ public class VehicleController {
 		} finally {
 			model.addAttribute("message", message);
 		}
-		Log4jManager.log(Level.INFO , "Vehicle inserted after " + (System.currentTimeMillis() - start) + " millis");
 		return "insertNewVehicle";
 	}
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/available", method = RequestMethod.GET)
-	public String availablePrenotations(@RequestParam(value = "rentstart", required = false) String rentStart,
+	public String availableVehiclesController(@RequestParam(value = "rentstart", required = false) String rentStart,
 			@RequestParam(value = "rentend", required = false) String rentEnd, Model model, HttpServletRequest req) {
-	
-		long start = System.currentTimeMillis();
+
 		String message = null;
 		log.info("Executing /available from com.garage.controller.VehicleController");
 		java.sql.Date rentStartDate = null;
@@ -175,7 +165,6 @@ public class VehicleController {
 				req.getSession().setAttribute("rentenddate", rentEndDate);
 			}
 		}
-		Log4jManager.log(Level.INFO , "AvailableVehicles retrieved after " + (System.currentTimeMillis() - start) + " millis");
 		return "availableVehicles";
 	}
 }

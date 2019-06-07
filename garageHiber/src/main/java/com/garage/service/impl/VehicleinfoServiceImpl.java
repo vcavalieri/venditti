@@ -3,7 +3,7 @@ package com.garage.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContext; 
 
 import com.garage.dao.impl.VehicleinfoDAOImpl;
 import com.garage.exception.VehicleinfoException;
@@ -13,11 +13,11 @@ public class VehicleinfoServiceImpl implements com.garage.service.VehicleinfoSer
 
 	@Autowired
 	private ApplicationContext ctx;
-
+  
 	@Override
-	public List<Vehicleinfo> allInfoService() throws VehicleinfoException {
+	public List<Vehicleinfo> allTypesService() throws VehicleinfoException {
 
 		VehicleinfoDAOImpl infoOp = ctx.getBean(VehicleinfoDAOImpl.class);
-		return infoOp.allTypes();
+		return infoOp.allTypesDAO();
 	}
 }

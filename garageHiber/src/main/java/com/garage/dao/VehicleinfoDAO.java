@@ -7,6 +7,6 @@ import com.garage.model.Vehicleinfo;
 
 public interface VehicleinfoDAO {
 
-	public List<Vehicleinfo> allTypes() throws VehicleinfoException;
+	public List<Vehicleinfo> allTypesDAO() throws VehicleinfoException;
 
 }

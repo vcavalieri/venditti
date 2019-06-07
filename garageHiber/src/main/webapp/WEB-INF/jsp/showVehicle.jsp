@@ -41,7 +41,7 @@ table, th, td {
 						<td>&nbsp;${itemlist.vehicleinfo.description}&nbsp;</td>
 						<c:if test="${sessionScope.username == 'admin'}">
 							<td><a
-								href="${pageContext.request.contextPath}/deleteVehicle?licenseplate=${itemlist.licenseplate}">DELETE
+								href="${pageContext.request.contextPath}/deleteVehicle?idvehicle=${itemlist.idvehicle}&licenseplate=${itemlist.licenseplate}">DELETE
 									VEHICLE</a></td>
 						</c:if>
 					</tr>

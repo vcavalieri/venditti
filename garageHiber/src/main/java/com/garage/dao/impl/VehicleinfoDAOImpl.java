@@ -17,7 +17,7 @@ public class VehicleinfoDAOImpl implements VehicleinfoDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Vehicleinfo> allTypes() throws VehicleinfoException {
+	public List<Vehicleinfo> allTypesDAO() throws VehicleinfoException {
 
 		List<Vehicleinfo> infoList = (List<Vehicleinfo>) ctx.getBean("vehicleinfoList");
 		try {

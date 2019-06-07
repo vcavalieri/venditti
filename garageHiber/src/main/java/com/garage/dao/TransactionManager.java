@@ -1,25 +1,21 @@
 package com.garage.dao;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List; 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import com.garage.dao.impl.PrenotationDAOImpl;
+ 
 import com.garage.utils.SingletonHiberUtil;
 
 @Component
 public class TransactionManager<T> {
-
-	private static final Log log = LogFactory.getLog(PrenotationDAOImpl.class);
 
 	@Autowired
 	private ApplicationContext ctx;
@@ -46,13 +42,11 @@ public class TransactionManager<T> {
 		Transaction tx = null;
 		try {
 			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
+			tx = session.beginTransaction(); 
 			Example myExample = Example.create(example);
 			Criteria criteria = session.createCriteria(example.getClass()).add(myExample);
 			toReturn = criteria.list();
-			tx.commit();
-			log.warn("Transaction committed");
+			tx.commit(); 
 		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();
@@ -70,12 +64,10 @@ public class TransactionManager<T> {
 		Transaction tx = null;
 		try {
 			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
+			tx = session.beginTransaction(); 
 			session.persist(example);
 			flag = true;
-			tx.commit();
-			log.warn("Transaction committed");
+			tx.commit(); 
 		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();
@@ -94,12 +86,10 @@ public class TransactionManager<T> {
 		Transaction tx = null;
 		try {
 			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
+			tx = session.beginTransaction(); 
 			session.delete(example);
 			flag = true;
-			tx.commit();
-			log.warn("Transaction committed");
+			tx.commit(); 
 		} catch (Exception e) {
 			if (tx != null) {
 				tx.rollback();

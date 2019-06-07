@@ -9,12 +9,12 @@ import com.garage.model.Vehicle;
 
 public interface VehicleDAO {
 
-	public boolean deleteVehicle(Vehicle vehicle) throws VehicleException;
+	public boolean deleteVehicleDAO(Vehicle vehicle) throws VehicleException;
 
-	public boolean insertVehicle(Vehicle vehicle) throws VehicleException;
+	public boolean insertVehicleDAO(Vehicle vehicle) throws VehicleException;
 
-	public List<Vehicle> searchVehicle(SearchFilter filter) throws VehicleException;
+	public List<Vehicle> searchVehicleDAO(SearchFilter filter) throws VehicleException;
 	
-	public List<Vehicle> availableVehicles(Date startDate, Date endDate) throws VehicleException;
+	public List<Vehicle> availableVehiclesDAO(Date startDate, Date endDate) throws VehicleException;
 
 }

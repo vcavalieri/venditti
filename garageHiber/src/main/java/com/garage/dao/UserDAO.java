@@ -5,8 +5,8 @@ import com.garage.model.User;
 
 public interface UserDAO {
 
-	public boolean registerUser(User user) throws UserException;
+	public boolean registerUserDAO(User user) throws UserException;
 
-	public String[] loginUser(User user) throws UserException;
+	public String[] loginUserDAO(User user) throws UserException;
 
 }

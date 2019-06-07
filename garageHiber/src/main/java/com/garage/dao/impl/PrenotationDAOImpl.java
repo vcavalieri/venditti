@@ -2,9 +2,7 @@ package com.garage.dao.impl;
 
 import java.sql.Date;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+ 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -21,14 +19,12 @@ import com.garage.utils.SingletonHiberUtil;
 
 public class PrenotationDAOImpl implements PrenotationDAO {
 
-	private static final Log log = LogFactory.getLog(PrenotationDAOImpl.class);
-
 	@Autowired
 	private ApplicationContext ctx;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean deletePrenotation(Prenotation pren) throws PrenotationException {
+	public boolean deletePrenotationDAO(Prenotation pren) throws PrenotationException {
 
 		boolean status = false;
 		try {
@@ -37,8 +33,7 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 			for (Prenotation prens : prenList) {
 				pren = null;
 				pren = prens;
-			}
-			log.warn("deleting...");
+			} 
 			status = txMan.delete(pren);
 		} catch (Exception e) {
 			throw new PrenotationException(e);
@@ -48,7 +43,7 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean insertPrenotation(User user, Vehicle vehicle, Date rentStart, Date rentEnd)
+	public boolean insertPrenotationDAO(User user, Vehicle vehicle, Date rentStart, Date rentEnd)
 			throws PrenotationException {
 
 		boolean status = false;
@@ -58,8 +53,7 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 		pren.setRentstart(rentStart);
 		pren.setRentend(rentEnd);
 		try {
-			TransactionManager<Prenotation> txMan = (TransactionManager<Prenotation>) ctx.getBean("txManPren");
-			log.warn("inserting...");
+			TransactionManager<Prenotation> txMan = (TransactionManager<Prenotation>) ctx.getBean("txManPren"); 
 			status = txMan.insert(pren);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,21 +64,18 @@ public class PrenotationDAOImpl implements PrenotationDAO {
 
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
-	public List<Prenotation> myVehiclePrenotations(User user) throws PrenotationException {
+	public List<Prenotation> myVehiclePrenotationsDAO(User user) throws PrenotationException {
 
 		List<Prenotation> prenList = (List<Prenotation>) ctx.getBean("prenList");
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = ctx.getBean(SingletonHiberUtil.class).getSession();
-			tx = session.beginTransaction();
-			log.warn("Transaction started");
+			tx = session.beginTransaction(); 
 			Query<Prenotation> query = session.getNamedQuery("myVehiclePrenotationProcedure").setParameter("idutente",
 					user.getIduser());
-			prenList = query.list();
-			log.info("Called StoredProcedure: myVehiclePrenotationProcedure");
-			tx.commit();
-			log.warn("Transaction committed");
+			prenList = query.list(); 
+			tx.commit(); 
 		} catch (Exception e) {
 			if (tx != null)
 			tx.rollback();

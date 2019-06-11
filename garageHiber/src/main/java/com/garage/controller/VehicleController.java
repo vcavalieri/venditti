@@ -24,7 +24,6 @@ import com.garage.service.impl.VehicleServiceImpl;
 import com.garage.service.impl.VehicleinfoServiceImpl; 
 import com.garage.utils.Utility;
 
-@Controller
 public class VehicleController {
 
 	private static final Log log = LogFactory.getLog(VehicleController.class);
